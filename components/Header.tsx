@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { JSX } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import ButtonSignin from "./ButtonSignin";
 import logo from "@/app/Unwavev3Icon.png";
 import config from "@/config";
 import { staatliches } from "@/styles/fonts";
@@ -13,22 +11,7 @@ import { staatliches } from "@/styles/fonts";
 const links: {
   href: string;
   label: string;
-}[] = [
-  {
-    href: "/#search",
-    label: "Record Pal",
-  },
-  {
-    href: "/#podcast",
-    label: "Podcast",
-  },
-  {
-    href: "/blog",
-    label: "Blog",
-  },
-];
-
-const cta: JSX.Element = <ButtonSignin extraStyle="btn-primary" />;
+}[] = [];
 
 // A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
 // The header is responsive, and on mobile, the links are hidden behind a burger button.

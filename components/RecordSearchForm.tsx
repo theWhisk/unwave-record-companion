@@ -3,7 +3,7 @@
 import  React,  { useState } from "react";
 import AlbumTile from "@/app/search/components/AlbumTile";
 import LookUpForm from "@/app/search/components/RecordSearchForm";
-import { ReleaseData } from "@/libs/record-search";
+import { ReleaseData } from "@/app/search/search-service";
 import { CurrencySelector } from "@/components/CurrencySelector";
 import { Currency, currencyOptions } from "@/types/currency";
 

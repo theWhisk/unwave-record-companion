@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.2.0",
     "axios": "^1.6.8",

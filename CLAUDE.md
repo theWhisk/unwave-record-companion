@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev       # Start dev server (localhost:3000)
 npm run build     # Production build
 npm run lint      # ESLint via next lint
+npm test          # Run Jest test suite
 ```
 
 Copy `.env.local.example` to `.env.local` before running locally:
@@ -44,6 +45,20 @@ All Discogs and Wikipedia calls happen server-side — the `DISCOGS_TOKEN` is ne
 - `DiscogsMaster` / `DiscogsItem` / `ConditionValues` — in `types/discogs.ts`
 - `ReleaseData` — the shape returned by `findRelease`, defined in `search-service.ts`
 - `Currency` enum + `currencyOptions` map — in `types/currency.ts`
+
+### Testing
+
+Jest via `next/jest` (SWC transformer, node environment). Test files are colocated alongside source as `*.test.ts`.
+
+When testing code that calls external APIs, mock these three modules at the top of the test file:
+
+```ts
+jest.mock('@/libs/discogs');
+jest.mock('@/libs/wiki');
+jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
+```
+
+`ConditionValues` fixture objects must include all 8 `Condition` enum keys, each with `{ currency: string; value: number }`.
 
 ### Styling
 

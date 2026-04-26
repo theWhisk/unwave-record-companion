@@ -23,12 +23,14 @@ Built by William (william@thewhisk.dev)
 - **Discogs API** — record database, marketplace pricing, ratings
 - **Wikipedia npm package** — album summaries
 - **ExchangeRate-API** — currency conversion (cached 24h)
+- **Jest** (via `next/jest`) — test suite
 
 ## Local development
 
 ```bash
 npm install
-npm run dev
+npm run dev     # localhost:3000
+npm test        # run Jest suite
 ```
 
 Copy `.env.local.example` to `.env.local` and fill in the three required values:

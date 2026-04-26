@@ -25,13 +25,12 @@ export async function getDiscogsMasterRelease(masterId: number): Promise<Discogs
  * @param format The format of the release to search for (e.g., "vinyl,album").
  * @returns A promise that resolves with a DiscogsPaginatedSearchResult containing the search results.
  */
-export async function searchDiscogs(artist: String, title: String, type: String, format: String): Promise<DiscogsPaginatedSearchResult> {
+export async function searchDiscogs(query: string, type: string, format: string): Promise<DiscogsPaginatedSearchResult> {
     try{
         const queryParams = {
             type: "release",
             format: "vinyl",
-            title: title,
-            artist: artist,
+            q: query,
         }
 
         const queryString = buildQuery(queryParams);

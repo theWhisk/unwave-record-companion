@@ -22,10 +22,10 @@ export interface ReleaseData {
     } ;
 }
 
-export async function findRelease(title: string, artist: string): Promise<ReleaseData> {
+export async function findRelease(query: string): Promise<ReleaseData> {
 
-    console.log(`Finding release with query - title: ${title}, artist: ${artist}`);
-    
+    console.log(`Finding release with query: ${query}`);
+
     const type = "release";
     const format = "vinyl,album";
     let originalPriceSuggestion: ConditionValues| null = null;
@@ -35,7 +35,7 @@ export async function findRelease(title: string, artist: string): Promise<Releas
     let ratingCount: number | null = null;
     let wikiSource: string | null = null;
 
-    const searchResponse = await searchDiscogs(artist, title, type, format);
+    const searchResponse = await searchDiscogs(query, type, format);
     if (searchResponse.results.length === 0) throw new Error("No releases found");
     
     for (const result of searchResponse.results) {

@@ -87,7 +87,7 @@ beforeEach(() => {
 
 describe('findRelease', () => {
   it('returns fully populated ReleaseData on happy path', async () => {
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.title).toBe('Test Album');
     expect(result.year).toBe(1991);
@@ -98,20 +98,26 @@ describe('findRelease', () => {
     expect(result.noForSale).toBe(42);
   });
 
+  it('passes the raw query string to searchDiscogs', async () => {
+    await findRelease('Test Album Artist A');
+
+    expect(mockSearchDiscogs).toHaveBeenCalledWith('Test Album Artist A', expect.any(String), expect.any(String));
+  });
+
   it('concatenates discogs genres and styles into genres', async () => {
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.genres).toEqual(['Rock', 'Pop', 'Indie Rock', 'Alternative']);
   });
 
   it('maps artist objects to an array of name strings', async () => {
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.artists).toEqual(['Artist A', 'Artist B']);
   });
 
   it('derives track count from the tracklist length', async () => {
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.noOfTracks).toBe(3);
   });
@@ -119,20 +125,20 @@ describe('findRelease', () => {
   it('throws when Discogs search returns no results', async () => {
     mockSearchDiscogs.mockResolvedValueOnce({ ...mockSearchResult, results: [] });
 
-    await expect(findRelease('Unknown', 'Nobody')).rejects.toThrow('No releases found');
+    await expect(findRelease('Unknown Nobody')).rejects.toThrow('No releases found');
   });
 
   it('throws when no search result has a master_id', async () => {
     const noMasterResult = { ...mockSearchResult, results: [{ ...mockSearchResult.results[0], master_id: 0 }] };
     mockSearchDiscogs.mockResolvedValueOnce(noMasterResult);
 
-    await expect(findRelease('Test Album', 'Artist A')).rejects.toThrow('No valid master ID found in search results');
+    await expect(findRelease('Test Album Artist A')).rejects.toThrow('No valid master ID found in search results');
   });
 
   it('sets originalPriceSuggestion to null and skips getPriceSuggestion when main_release is falsy', async () => {
     mockGetDiscogsMasterRelease.mockResolvedValueOnce({ ...mockMaster, main_release: 0 });
 
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(mockGetPriceSuggestion).not.toHaveBeenCalled();
     expect(result.originalPriceSuggestion).toBeNull();
@@ -141,7 +147,7 @@ describe('findRelease', () => {
   it('sets rating count and average to null when rating is missing from response', async () => {
     mockGetRating.mockResolvedValueOnce({} as DiscogsRatingResponse);
 
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.rating).toEqual({ count: null, average: null });
   });
@@ -149,7 +155,7 @@ describe('findRelease', () => {
   it('sets image to null when the master release has no images', async () => {
     mockGetDiscogsMasterRelease.mockResolvedValueOnce({ ...mockMaster, images: [] });
 
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.image).toBeNull();
   });
@@ -157,14 +163,14 @@ describe('findRelease', () => {
   it('sets summary to null when Wikipedia returns no results', async () => {
     mockSearchWiki.mockResolvedValueOnce({ results: [] } as any);
 
-    const result = await findRelease('Test Album', 'Artist A');
+    const result = await findRelease('Test Album Artist A');
 
     expect(result.summary).toBeNull();
     expect(mockGetWikiSummary).not.toHaveBeenCalled();
   });
 
   it('calls revalidatePath("/") on success', async () => {
-    await findRelease('Test Album', 'Artist A');
+    await findRelease('Test Album Artist A');
 
     expect(mockRevalidatePath).toHaveBeenCalledTimes(1);
     expect(mockRevalidatePath).toHaveBeenCalledWith('/');

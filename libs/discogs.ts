@@ -19,8 +19,7 @@ export async function getDiscogsMasterRelease(masterId: number): Promise<Discogs
 
 /**
  * Performs a search on the Discogs database for records matching the specified criteria.
- * @param artist The name of the artist to search for.
- * @param title The title of the record to search for.
+ * @param query Free-text search query (e.g. "Rumours Fleetwood Mac").
  * @param type The type of release to search for (e.g., "release").
  * @param format The format of the release to search for (e.g., "vinyl,album").
  * @returns A promise that resolves with a DiscogsPaginatedSearchResult containing the search results.

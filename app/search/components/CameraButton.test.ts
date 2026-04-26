@@ -1,6 +1,5 @@
 import { handleCameraCapture } from './CameraButton';
-import { findRelease } from '@/app/search/search-service';
-import { ReleaseData } from '@/app/search/search-service';
+import { findRelease, ReleaseData } from '@/app/search/search-service';
 
 jest.mock('@/app/search/search-service', () => ({ findRelease: jest.fn() }));
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));

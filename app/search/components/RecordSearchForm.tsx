@@ -18,34 +18,15 @@ interface LookUpFormProps {
     const { register, handleSubmit, reset, formState: { errors }, setError } = useForm<FormData>({reValidateMode: 'onSubmit'});
   
     const onSubmit: SubmitHandler<FormData> = async (data) =>{
-  
-        let title: string;
-        let artist: string;
-        
+
         if (!data.term.trim()) {
             setError("term", { type: "manual", message: "Search term is empty" });
             return;
         }
 
-        const terms = data.term.split(",");
-
-        if (terms.length < 1 || terms.length > 2) {
-            setError("term", { type: "manual", message: "Invalid number of terms" });
-            return;
-        }
-
-        if (terms.length >= 1) {
-            title = terms[0].trim();
-        }
-
-        if (terms.length >= 2) {
-            artist = terms[1].trim();
-        }
-  
         setLoading(true);
         try {
-            console.log(`Finding release with query - title: ${title}, artist: ${artist}`);
-            const response = await findRelease(title, artist);
+            const response = await findRelease(data.term.trim());
             onRecordSearch(response);
         } catch (error) {
             setError("term", { type: "manual", message: "Couldn't find release" });
@@ -63,7 +44,7 @@ interface LookUpFormProps {
                 <span 
                     data-tooltip-id="tooltip" 
                     className="label-text-alt tooltip badge badge-secondary badge-outline" 
-                    data-tooltip-content="Search by the album title, the artist name is optional and should be separated by a comma (eg. Abbey Road, The Beatles)">
+                    data-tooltip-content="Search by album title, artist, or both (eg. Abbey Road, or Abbey Road The Beatles)">
                         Help</span>
             </label>
             <div className="flex w-full space-x-2">

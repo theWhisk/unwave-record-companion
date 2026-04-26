@@ -63,3 +63,7 @@ jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 ### Styling
 
 TailwindCSS with DaisyUI component classes. Theme is set via `data-theme` on `<html>` — driven by `config.colors.theme` from `config.ts`. Global styles are in `app/globals.css`.
+
+## Vision
+
+The long-term goal is frictionless vinyl pricing: point a camera at an album cover and get an estimated price. The intended approach is to send a captured frame to a vision LLM (e.g. Claude Haiku) server-side, extract artist and title, then pass that as a free-text query to the existing Discogs pipeline. Text search is an interim input method on the way to that goal.

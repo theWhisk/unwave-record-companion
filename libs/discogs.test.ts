@@ -39,26 +39,27 @@ describe('searchDiscogs', () => {
       json: jest.fn().mockResolvedValueOnce(mockResults),
     });
 
-    const result = await searchDiscogs('Beatles', 'Abbey Road', 'release', 'vinyl');
+    const result = await searchDiscogs('Abbey Road Beatles', 'release', 'vinyl');
 
     expect(result).toEqual(mockResults);
   });
 
-  it('encodes title and artist as query parameters in the request URL', async () => {
+  it('encodes the query as the q parameter in the request URL', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce({}) });
 
-    await searchDiscogs('Beatles', 'Abbey Road', 'release', 'vinyl');
+    await searchDiscogs('Abbey Road Beatles', 'release', 'vinyl');
 
     const calledUrl = (global.fetch as jest.Mock).mock.calls[0][0] as string;
     const params = new URL(calledUrl).searchParams;
-    expect(params.get('artist')).toBe('Beatles');
-    expect(params.get('title')).toBe('Abbey Road');
+    expect(params.get('q')).toBe('Abbey Road Beatles');
+    expect(params.has('artist')).toBe(false);
+    expect(params.has('title')).toBe(false);
   });
 
   it('rethrows as "Error searching Discogs" when fetch throws', async () => {
     (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('network error'));
 
-    await expect(searchDiscogs('Artist', 'Title', 'release', 'vinyl')).rejects.toThrow('Error searching Discogs');
+    await expect(searchDiscogs('Title Artist', 'release', 'vinyl')).rejects.toThrow('Error searching Discogs');
   });
 });
 

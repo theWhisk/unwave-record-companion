@@ -72,7 +72,7 @@ test('search form input and submit button are visible', async ({ page }) => {
 
 test('camera button is visible and contains a hidden file input', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('button[type="button"]')).toBeVisible();
+  await expect(page.getByRole('button', { name: /scan a cover/i })).toBeVisible();
   const fileInput = page.locator('input[type="file"]');
   await expect(fileInput).toHaveAttribute('accept', 'image/*');
   await expect(fileInput).toHaveAttribute('capture', 'environment');

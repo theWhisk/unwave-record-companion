@@ -95,17 +95,31 @@ export default function CameraButton({ onRecordSearch }: CameraButtonProps) {
       />
       <button
         type="button"
-        className="btn btn-primary flex items-center justify-center"
+        className="btn btn-primary w-full gap-2"
         onClick={() => fileInputRef.current?.click()}
         disabled={loading}
       >
-        {loading ? (
-          <span className="loading loading-spinner" />
-        ) : (
-          <CameraIcon className="h-5 w-5" />
-        )}
+        {loading ? <span className="loading loading-spinner" /> : <CameraIcon className="h-5 w-5" />}
+        {loading ? 'Identifying cover…' : 'Scan a cover'}
       </button>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      <p className="hidden md:block text-xs text-center text-base-content/40 mt-1">
+        Opens a file picker on desktop
+      </p>
+      {loading && (
+        <div className="card bg-base-200 animate-pulse mt-2">
+          <figure className="h-48 bg-base-300 rounded-t-2xl" />
+          <div className="card-body gap-3">
+            <div className="h-5 bg-base-300 rounded w-3/4" />
+            <div className="h-4 bg-base-300 rounded w-1/2" />
+            <div className="h-4 bg-base-300 rounded w-1/3" />
+          </div>
+        </div>
+      )}
+      {error && (
+        <div role="alert" className="alert alert-error mt-2">
+          <span className="text-sm">{error}</span>
+        </div>
+      )}
     </div>
   );
 }

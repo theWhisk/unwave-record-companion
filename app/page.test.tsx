@@ -6,11 +6,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Home from './page';
 
-jest.mock('@/components/Header', () => () => <div />);
-jest.mock('@/components/Footer', () => () => <div />);
+jest.mock('@/components/Header', () => function Header() { return <div />; });
+jest.mock('@/components/Footer', () => function Footer() { return <div />; });
 jest.mock('@/app/search/search-service', () => ({ findRelease: jest.fn() }));
-jest.mock('@/app/search/components/AlbumTile', () => () => <div />);
-jest.mock('@/components/CurrencySelector', () => ({ CurrencySelector: () => <div /> }));
+jest.mock('@/app/search/components/AlbumTile', () => function AlbumTile() { return <div />; });
+jest.mock('@/components/CurrencySelector', () => ({ CurrencySelector: function CurrencySelector() { return <div />; } }));
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 
 beforeEach(() => {

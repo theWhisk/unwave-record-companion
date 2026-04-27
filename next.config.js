@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ["i.discogs.com"],
   },
+  async redirects() {
+    return [{ source: '/search', destination: '/', permanent: true }];
+  },
 };
 
 module.exports = nextConfig;

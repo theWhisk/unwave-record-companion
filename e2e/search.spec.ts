@@ -59,19 +59,19 @@ test('page loads without console errors', async ({ page }) => {
     if (url && !url.includes('localhost')) return;
     errors.push(msg.text());
   });
-  await page.goto('/search');
+  await page.goto('/');
   await page.waitForLoadState('networkidle');
   expect(errors).toHaveLength(0);
 });
 
 test('search form input and submit button are visible', async ({ page }) => {
-  await page.goto('/search');
+  await page.goto('/');
   await expect(page.locator('#search')).toBeVisible();
   await expect(page.locator('button[type="submit"]')).toBeVisible();
 });
 
 test('camera button is visible and contains a hidden file input', async ({ page }) => {
-  await page.goto('/search');
+  await page.goto('/');
   await expect(page.locator('button[type="button"]')).toBeVisible();
   const fileInput = page.locator('input[type="file"]');
   await expect(fileInput).toHaveAttribute('accept', 'image/*');
@@ -82,7 +82,7 @@ test('camera button is visible and contains a hidden file input', async ({ page 
 test('submitting a search triggers loading state then renders AlbumTile', async ({ page }) => {
   // Intercept the server action POST (Next-Action header identifies it).
   // Delay 100 ms so the loading spinner is observable before the response lands.
-  await page.route('/search', async (route) => {
+  await page.route('/', async (route) => {
     if (
       route.request().method() === 'POST' &&
       route.request().headers()['next-action']
@@ -101,7 +101,7 @@ test('submitting a search triggers loading state then renders AlbumTile', async 
     }
   });
 
-  await page.goto('/search');
+  await page.goto('/');
   await page.waitForLoadState('networkidle');
   await page.fill('#search', 'Abbey Road');
   await page.click('button[type="submit"]');
@@ -111,7 +111,7 @@ test('submitting a search triggers loading state then renders AlbumTile', async 
 });
 
 test('currency selector is visible and changing it does not crash the page', async ({ page }) => {
-  await page.goto('/search');
+  await page.goto('/');
   const select = page.locator('select');
   await expect(select).toBeVisible();
   await select.selectOption('GBP');
@@ -120,7 +120,7 @@ test('currency selector is visible and changing it does not crash the page', asy
 
 test('layout has no horizontal overflow at 390×844 (iPhone 14)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/search');
+  await page.goto('/');
   await page.waitForLoadState('networkidle');
   const { docScrollWidth, innerWidth } = await page.evaluate(() => ({
     docScrollWidth: document.documentElement.scrollWidth,

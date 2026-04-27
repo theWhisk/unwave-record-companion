@@ -3,8 +3,9 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import { CameraIcon } from '@heroicons/react/24/solid';
 import { findRelease, ReleaseData } from '@/app/search/search-service';
+import { resizeImage } from './resize-image';
 
-const MAX_FILE_SIZE = 10_485_760;
+const MAX_FILE_SIZE = 52_428_800; // 50 MB — hard cap before canvas resize
 
 export async function handleCameraCapture(
   file: File | null | undefined,
@@ -23,8 +24,10 @@ export async function handleCameraCapture(
 
   let query: string;
   try {
+    const resized = await resizeImage(file);
+    const compressed = new File([resized], file.name, { type: 'image/jpeg' });
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('image', compressed);
 
     const res = await fetch('/api/identify', { method: 'POST', body: formData });
 

@@ -3,6 +3,9 @@ import { findRelease, ReleaseData } from '@/app/search/search-service';
 
 jest.mock('@/app/search/search-service', () => ({ findRelease: jest.fn() }));
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
+jest.mock('./resize-image', () => ({
+  resizeImage: jest.fn().mockResolvedValue(new Blob(['tiny'], { type: 'image/jpeg' })),
+}));
 
 const mockFindRelease = findRelease as jest.MockedFunction<typeof findRelease>;
 
@@ -61,13 +64,21 @@ describe('handleCameraCapture', () => {
     expect(setLoading).not.toHaveBeenCalled();
   });
 
-  it('sets "too large" error and skips fetch when file exceeds 10 MB', async () => {
-    const bigFile = makeFile(10_485_761);
+  it('sets "too large" error and skips fetch when file exceeds 50 MB', async () => {
+    const bigFile = makeFile(52_428_801);
 
     await handleCameraCapture(bigFile, onRecordSearch, setLoading, setError);
 
     expect(setError).toHaveBeenCalledWith(expect.stringContaining('too large'));
     expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it('compresses image via resizeImage before uploading', async () => {
+    const { resizeImage } = await import('./resize-image');
+
+    await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);
+
+    expect(resizeImage).toHaveBeenCalledWith(expect.any(File));
   });
 
   it('POSTs to /api/identify with FormData containing image field', async () => {

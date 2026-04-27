@@ -8,6 +8,9 @@ import CameraButton from './CameraButton';
 
 jest.mock('@/app/search/search-service', () => ({ findRelease: jest.fn() }));
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
+jest.mock('./resize-image', () => ({
+  resizeImage: jest.fn().mockResolvedValue(new Blob(['tiny'], { type: 'image/jpeg' })),
+}));
 
 function makeFile(size = 1024): File {
   return new File([new ArrayBuffer(size)], 'cover.jpg', { type: 'image/jpeg' });

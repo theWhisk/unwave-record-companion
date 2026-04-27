@@ -15,7 +15,7 @@ export interface ReleaseData {
     originalPriceSuggestion: ConditionValues;
     latestPriceSuggestion: number;
     genres: string[];
-    summary: string;
+    summary: string | null;
     rating: {
         count: number, 
         average: number
@@ -71,10 +71,14 @@ export async function findRelease(query: string): Promise<ReleaseData> {
          console.log("No image URI found");
     }
 
-    const wikiResponse = await searchWiki(`${discogsMaster.title}, ${discogsMaster.artists[0].name}, album`);
-    if (wikiResponse.results && wikiResponse.results.length > 0 && wikiResponse.results.length > 0) {
-        const wikiTitle = wikiResponse.results[0].title;
-        wikiSource = (await getWikiSummary(wikiTitle)).extract;
+    try {
+        const wikiResponse = await searchWiki(`${discogsMaster.title}, ${discogsMaster.artists[0].name}, album`);
+        if (wikiResponse.results && wikiResponse.results.length > 0) {
+            const wikiTitle = wikiResponse.results[0].title;
+            wikiSource = (await getWikiSummary(wikiTitle)).extract;
+        }
+    } catch (error) {
+        console.warn('Wikipedia lookup failed, continuing without summary:', error);
     }
    
     

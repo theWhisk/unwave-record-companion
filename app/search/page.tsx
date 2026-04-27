@@ -36,7 +36,7 @@ export default function Search() {
         <LookUpForm onRecordSearch={handleRecordSearch} />
         <div className="flex items-center gap-4">
           <div className="flex-1 border-t border-base-300" />
-          <span className="text-sm text-base-content/50">or scan a cover</span>
+          <span className="text-sm text-base-content/50">or</span>
           <div className="flex-1 border-t border-base-300" />
         </div>
         <CameraButton onRecordSearch={handleRecordSearch} />

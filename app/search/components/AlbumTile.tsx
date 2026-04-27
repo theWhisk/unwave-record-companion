@@ -59,8 +59,7 @@ export default function AlbumTile(props: AlbumTileProps) {
             </div>
         </div>
         <div className="mt-4">
-            {/* Album description */}
-            <p>{props.findRecordResponse.summary}</p>
+            {props.findRecordResponse.summary && <p>{props.findRecordResponse.summary}</p>}
         </div></>
     
     )

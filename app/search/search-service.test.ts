@@ -169,6 +169,22 @@ describe('findRelease', () => {
     expect(mockGetWikiSummary).not.toHaveBeenCalled();
   });
 
+  it('sets summary to null when searchWiki throws', async () => {
+    mockSearchWiki.mockRejectedValueOnce(new Error('wiki credentials error'));
+
+    const result = await findRelease('Test Album Artist A');
+
+    expect(result.summary).toBeNull();
+  });
+
+  it('sets summary to null when getWikiSummary throws', async () => {
+    mockGetWikiSummary.mockRejectedValueOnce(new Error('wiki summary error'));
+
+    const result = await findRelease('Test Album Artist A');
+
+    expect(result.summary).toBeNull();
+  });
+
   it('calls revalidatePath("/") on success', async () => {
     await findRelease('Test Album Artist A');
 

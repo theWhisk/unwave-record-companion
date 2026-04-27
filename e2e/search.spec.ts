@@ -53,7 +53,11 @@ test.beforeEach(async ({ page }) => {
 test('page loads without console errors', async ({ page }) => {
   const errors: string[] = [];
   page.on('console', (msg) => {
-    if (msg.type() === 'error') errors.push(msg.text());
+    if (msg.type() !== 'error') return;
+    // Ignore noise from Next.js dev-mode HMR and browser-injected scripts.
+    const url = msg.location().url ?? '';
+    if (url && !url.includes('localhost')) return;
+    errors.push(msg.text());
   });
   await page.goto('/search');
   await page.waitForLoadState('networkidle');

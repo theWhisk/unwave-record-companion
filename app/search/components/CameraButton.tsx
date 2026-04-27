@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { CameraIcon } from '@heroicons/react/24/solid';
 import { findRelease, ReleaseData } from '@/app/search/search-service';
 
@@ -76,7 +76,7 @@ export default function CameraButton({ onRecordSearch }: CameraButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setError('');
     handleCameraCapture(file, onRecordSearch, setLoading, setError);

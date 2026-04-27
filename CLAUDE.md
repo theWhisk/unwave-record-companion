@@ -9,6 +9,7 @@ npm run dev       # Start dev server (localhost:3000)
 npm run build     # Production build
 npm run lint      # ESLint via next lint
 npm test          # Run Jest test suite
+npm run test:e2e  # Run Playwright e2e suite (starts dev server automatically)
 ```
 
 Copy `.env.local.example` to `.env.local` before running locally:
@@ -25,7 +26,7 @@ EXCHANGE_RATE_CACHE_DURATION=86400000
 
 ### Request flow
 
-1. `RecordSearchForm` (client) calls the `findRelease` server action in `app/search/search-service.ts`
+1. `app/page.tsx` (client) renders `LookUpForm` and `CameraButton`; both call the `findRelease` server action in `app/search/search-service.ts`
 2. `findRelease` makes sequential Discogs calls:
    - `searchDiscogs` → finds matching releases, takes the first result with a `master_id`
    - `getDiscogsMasterRelease(master_id)` → gets the canonical master release
@@ -59,6 +60,8 @@ jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 ```
 
 `ConditionValues` fixture objects must include all 8 `Condition` enum keys, each with `{ currency: string; value: number }`.
+
+Playwright e2e tests live in `e2e/search.spec.ts` and exercise the full UI at `/`. Run them with `npm run test:e2e` — the Playwright config starts the dev server automatically. The server-action intercept in those tests targets `'/'` (not `'/search'`) because `findRelease` is a server action and Next.js posts it to the current page URL. When mocking components in Jest render tests, use named function expressions (`function Foo() { return <div />; }`) rather than anonymous arrows to satisfy the `react/display-name` ESLint rule.
 
 ### Styling
 

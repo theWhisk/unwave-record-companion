@@ -31,6 +31,9 @@ jobs:
           EXCHANGE_RATE_API_KEY: dummy
           ANTHROPIC_API_KEY: dummy
           EXCHANGE_RATE_CACHE_DURATION: '86400000'
+          NEXT_PUBLIC_SENTRY_DSN: ''
+          NEXT_PUBLIC_AXIOM_TOKEN: ''
+          NEXT_PUBLIC_AXIOM_DATASET: ''
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

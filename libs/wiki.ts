@@ -1,11 +1,12 @@
 import wiki, { wikiSearchResult, wikiSummary } from "wikipedia";
+import { log } from "next-axiom";
 
 export async function getWikiSummary(title: string): Promise<wikiSummary> {
-    try {  
+    try {
         const summary = await wiki.summary(title);
         return summary;
     } catch (error) {
-        console.error(error);
+        log.error('wiki summary lookup failed', { error });
         throw new Error("Error searching Wikipedia");
     }
 }
@@ -15,9 +16,7 @@ export async function searchWiki(query: string): Promise<wikiSearchResult> {
         const results = await wiki.search(query);
         return results;
     } catch (error) {
-        console.error(error);
+        log.error('wiki search failed', { error });
         throw new Error("Error searching Wikipedia");
     }
-} 
-
-
+}

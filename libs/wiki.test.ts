@@ -6,10 +6,14 @@ jest.mock('wikipedia', () => ({
   },
 }));
 
+jest.mock('next-axiom', () => ({ log: { error: jest.fn(), info: jest.fn() } }));
+
 import wiki from 'wikipedia';
+import { log } from 'next-axiom';
 import { getWikiSummary, searchWiki } from './wiki';
 
 const mockWiki = wiki as jest.Mocked<typeof wiki>;
+const mockLog = log as any;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -31,6 +35,14 @@ describe('getWikiSummary', () => {
 
     await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow('Error searching Wikipedia');
   });
+
+  it('logs the error with log.error when wiki.summary throws', async () => {
+    const err = new Error('page not found');
+    mockWiki.summary.mockRejectedValueOnce(err);
+
+    await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow();
+    expect(mockLog.error).toHaveBeenCalledWith('wiki summary lookup failed', expect.objectContaining({ error: err }));
+  });
 });
 
 describe('searchWiki', () => {
@@ -48,5 +60,13 @@ describe('searchWiki', () => {
     mockWiki.search.mockRejectedValueOnce(new Error('network failure'));
 
     await expect(searchWiki('Abbey Road Beatles')).rejects.toThrow('Error searching Wikipedia');
+  });
+
+  it('logs the error with log.error when wiki.search throws', async () => {
+    const err = new Error('network failure');
+    mockWiki.search.mockRejectedValueOnce(err);
+
+    await expect(searchWiki('Abbey Road Beatles')).rejects.toThrow();
+    expect(mockLog.error).toHaveBeenCalledWith('wiki search failed', expect.objectContaining({ error: err }));
   });
 });

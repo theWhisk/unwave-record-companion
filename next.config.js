@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+const { withSentryConfig } = require('@sentry/nextjs');
+const { withAxiom } = require('next-axiom');
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -9,4 +12,7 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(withAxiom(nextConfig), {
+  silent: true,
+  hideSourceMaps: true,
+});

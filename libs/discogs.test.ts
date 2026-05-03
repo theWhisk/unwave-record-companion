@@ -1,6 +1,12 @@
+jest.mock('next-axiom', () => ({ log: { error: jest.fn(), info: jest.fn() } }));
+
+import { log } from 'next-axiom';
 import { getDiscogsMasterRelease, searchDiscogs, getPriceSuggestion, getRating } from './discogs';
 
+const mockLog = log as any;
+
 beforeEach(() => {
+  jest.clearAllMocks();
   jest.spyOn(global, 'fetch').mockResolvedValue({
     json: jest.fn().mockResolvedValue({}),
   } as any);
@@ -61,6 +67,14 @@ describe('searchDiscogs', () => {
 
     await expect(searchDiscogs('Title Artist', 'release', 'vinyl')).rejects.toThrow('Error searching Discogs');
   });
+
+  it('logs the error with log.error when fetch throws', async () => {
+    const err = new Error('network error');
+    (global.fetch as jest.Mock).mockRejectedValueOnce(err);
+
+    await expect(searchDiscogs('Title Artist', 'release', 'vinyl')).rejects.toThrow();
+    expect(mockLog.error).toHaveBeenCalledWith('discogs search failed', expect.objectContaining({ error: err }));
+  });
 });
 
 describe('getPriceSuggestion', () => {
@@ -85,6 +99,14 @@ describe('getPriceSuggestion', () => {
 
     await expect(getPriceSuggestion(123)).rejects.toThrow('Error getting price suggestion');
   });
+
+  it('logs the error with log.error when fetch throws', async () => {
+    const err = new Error('network error');
+    (global.fetch as jest.Mock).mockRejectedValueOnce(err);
+
+    await expect(getPriceSuggestion(123)).rejects.toThrow();
+    expect(mockLog.error).toHaveBeenCalledWith('discogs price suggestion failed', expect.objectContaining({ error: err }));
+  });
 });
 
 describe('getRating', () => {
@@ -108,5 +130,13 @@ describe('getRating', () => {
     (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('network error'));
 
     await expect(getRating(456)).rejects.toThrow('Error getting rating');
+  });
+
+  it('logs the error with log.error when fetch throws', async () => {
+    const err = new Error('network error');
+    (global.fetch as jest.Mock).mockRejectedValueOnce(err);
+
+    await expect(getRating(456)).rejects.toThrow();
+    expect(mockLog.error).toHaveBeenCalledWith('discogs rating fetch failed', expect.objectContaining({ error: err }));
   });
 });

@@ -4,6 +4,7 @@ import { Condition, ConditionValues, DiscogsMaster, DiscogsPaginatedSearchResult
 jest.mock('@/libs/discogs');
 jest.mock('@/libs/wiki');
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
+jest.mock('next-axiom', () => ({ log: { info: jest.fn(), warn: jest.fn(), error: jest.fn() } }));
 
 import { searchDiscogs, getDiscogsMasterRelease, getPriceSuggestion, getRating } from '@/libs/discogs';
 import { searchWiki, getWikiSummary } from '@/libs/wiki';

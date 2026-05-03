@@ -118,6 +118,26 @@ test('currency selector is visible and changing it does not crash the page', asy
   await expect(page.locator('#search')).toBeVisible();
 });
 
+test('search shows error message when server action fails', async ({ page }) => {
+  await page.route('/', async (route) => {
+    if (
+      route.request().method() === 'POST' &&
+      route.request().headers()['next-action']
+    ) {
+      await route.abort('failed');
+    } else {
+      await route.continue();
+    }
+  });
+
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.fill('#search', 'nonexistent album');
+  await page.click('button[type="submit"]');
+
+  await expect(page.locator('text=Couldn\'t find release')).toBeVisible({ timeout: 5_000 });
+});
+
 test('layout has no horizontal overflow at 390×844 (iPhone 14)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

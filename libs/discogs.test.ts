@@ -2,6 +2,7 @@ jest.mock('next-axiom', () => ({ log: { error: jest.fn(), info: jest.fn() } }));
 
 import { log } from 'next-axiom';
 import { getDiscogsMasterRelease, searchDiscogs, getPriceSuggestion, getRating } from './discogs';
+import type { DiscogsItem } from '@/types/discogs';
 
 const mockLog = log as any;
 
@@ -40,7 +41,7 @@ describe('getDiscogsMasterRelease', () => {
 
 describe('searchDiscogs', () => {
   it('returns the parsed JSON response', async () => {
-    const mockResults = { results: [], pagination: { page: 1, pages: 1, per_page: 10, items: 0, urls: {} } };
+    const mockResults = { results: [] as DiscogsItem[], pagination: { page: 1, pages: 1, per_page: 10, items: 0, urls: {} } };
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       json: jest.fn().mockResolvedValueOnce(mockResults),
     });

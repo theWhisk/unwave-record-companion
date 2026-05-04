@@ -2,7 +2,7 @@ import { Currency, currencyOptions } from "@/types/currency";
 import React from "react";
 
 interface CurrencySelectorProps {
-    onCurrencyChange: (currency: Currency) => void; // Only need to notify the parent about the selected currency
+    onCurrencyChange: (_currency: Currency) => void;
   }
 
 export const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onCurrencyChange }) => {

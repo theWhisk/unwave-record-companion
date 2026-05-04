@@ -9,9 +9,9 @@ const MAX_FILE_SIZE = 52_428_800; // 50 MB — hard cap before canvas resize
 
 export async function handleCameraCapture(
   file: File | null | undefined,
-  onRecordSearch: (data: ReleaseData) => void,
-  setLoading: (loading: boolean) => void,
-  setError: (error: string) => void,
+  onRecordSearch: (_data: ReleaseData) => void,
+  setLoading: (_loading: boolean) => void,
+  setError: (_error: string) => void,
 ) {
   if (!file) return;
 
@@ -71,7 +71,7 @@ export async function handleCameraCapture(
 }
 
 interface CameraButtonProps {
-  onRecordSearch: (data: ReleaseData) => void;
+  onRecordSearch: (_data: ReleaseData) => void;
 }
 
 export default function CameraButton({ onRecordSearch }: CameraButtonProps) {

@@ -14,7 +14,7 @@ interface AlbumTileProps {
 
 export default function AlbumTile(props: AlbumTileProps) {
 
-    const {rates, loading} = useCurrency();
+    const { rates } = useCurrency();
     
     const mintPrice = props.findRecordResponse.originalPriceSuggestion[Condition.Mint].value;
     const goodPrice = props.findRecordResponse.originalPriceSuggestion[Condition.VeryGood].value;

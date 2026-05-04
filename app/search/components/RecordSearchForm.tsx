@@ -6,7 +6,7 @@ import { useState } from "react";
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 
 interface LookUpFormProps {
-    onRecordSearch: (findRecordResponse: ReleaseData) => void;
+    onRecordSearch: (_findRecordResponse: ReleaseData) => void;
   }
 
   interface FormData {
@@ -15,7 +15,7 @@ interface LookUpFormProps {
 
   export default function LookUpForm({onRecordSearch}: LookUpFormProps) {
     const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, reset, formState: { errors }, setError } = useForm<FormData>({reValidateMode: 'onSubmit'});
+    const { register, handleSubmit, formState: { errors }, setError } = useForm<FormData>({reValidateMode: 'onSubmit'});
   
     const onSubmit: SubmitHandler<FormData> = async (data) =>{
 

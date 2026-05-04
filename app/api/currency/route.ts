@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 let rates: { [currency: string]: number } | null = null;
 let cacheTimestamp: number | null = null;
 
-export async function GET(req: Request | NextRequest) {
+export async function GET(_req: Request) {
     const now = Date.now();
     
     if (rates && cacheTimestamp && now - cacheTimestamp < Number(process.env.EXCHANGE_RATE_CACHE_DURATION)) {

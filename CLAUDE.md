@@ -61,7 +61,7 @@ jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 
 `ConditionValues` fixture objects must include all 8 `Condition` enum keys, each with `{ currency: string; value: number }`.
 
-Playwright e2e tests live in `e2e/search.spec.ts` and exercise the full UI at `/`. Run them with `npm run test:e2e` — the Playwright config starts the dev server automatically. The server-action intercept in those tests targets `'/'` (not `'/search'`) because `findRelease` is a server action and Next.js posts it to the current page URL. When mocking components in Jest render tests, use named function expressions (`function Foo() { return <div />; }`) rather than anonymous arrows to satisfy the `react/display-name` ESLint rule.
+Playwright e2e tests live in `e2e/search.spec.ts` and exercise the full UI at `/`. Run them with `npm run test:e2e` — the Playwright config starts the dev server automatically. The server-action intercept in those tests targets `'/'` (not `'/search'`) because `findRelease` is a server action and Next.js posts it to the current page URL. To simulate a server action failure, use `route.abort('failed')` — a `route.fulfill({ status: 500 })` response is silently resolved by Next.js's `fetchServerAction` rather than rejected, so the form's `catch` block never runs. When mocking components in Jest render tests, use named function expressions (`function Foo() { return <div />; }`) rather than anonymous arrows to satisfy the `react/display-name` ESLint rule.
 
 ### Styling
 

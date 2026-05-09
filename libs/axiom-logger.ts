@@ -5,7 +5,11 @@ const dataset = process.env.AXIOM_DATASET;
 const isConfigured = Boolean(token && dataset);
 
 const axiomClient = isConfigured
-  ? new Axiom({ token: token!, onError: (err) => console.error('[axiom]', err) })
+  ? new Axiom({
+      token: token!,
+      url: process.env.AXIOM_URL,
+      onError: (err) => console.error('[axiom]', err),
+    })
   : null;
 
 type Fields = Record<string, unknown>;

@@ -108,6 +108,9 @@ test('submitting a search triggers loading state then renders AlbumTile', async 
 
   await expect(page.locator('button[type="submit"] .loading')).toBeVisible();
   await expect(page.locator('.card-title')).toHaveText('Abbey Road', { timeout: 10_000 });
+  await expect(page.locator('input[type="range"]')).toBeVisible();
+  // VG+ default: value=30, USD rate=1 → $30
+  await expect(page.getByText('$30')).toBeVisible();
 });
 
 test('currency selector is visible and changing it does not crash the page', async ({ page }) => {

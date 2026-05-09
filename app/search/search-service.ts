@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache";
-import { log } from "next-axiom";
+import { log, flushAxiom } from "@/libs/axiom-logger";
 import { searchDiscogs, getDiscogsMasterRelease, getPriceSuggestion, getRating } from "@/libs/discogs";
 import { getWikiSummary, searchWiki } from "@/libs/wiki";
 import { ConditionValues, DiscogsMaster } from "@/types/discogs";
@@ -24,6 +24,7 @@ export interface ReleaseData {
 }
 
 export async function findRelease(query: string): Promise<ReleaseData> {
+  try {
     log.info('findRelease started', { query });
 
     const type = "release";
@@ -97,4 +98,7 @@ export async function findRelease(query: string): Promise<ReleaseData> {
     revalidatePath("/");
     log.info('findRelease complete', { title: discogsMaster.title });
     return findRecordResponse;
+  } finally {
+    await flushAxiom();
+  }
 }

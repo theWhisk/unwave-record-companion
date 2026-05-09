@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.91.1",
+    "@axiomhq/js": "^1.6.1",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.2.0",
     "@sentry/nextjs": "^10.51.0",
@@ -19,7 +20,6 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "next": "^14.1.4",
-    "next-axiom": "^1.10.0",
     "nextjs-toploader": "^1.6.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",

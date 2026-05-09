@@ -1,5 +1,5 @@
 import wiki, { wikiSearchResult, wikiSummary } from "wikipedia";
-import { log } from "next-axiom";
+import { log } from "@/libs/axiom-logger";
 
 export async function getWikiSummary(title: string): Promise<wikiSummary> {
     try {

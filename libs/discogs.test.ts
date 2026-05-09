@@ -1,6 +1,6 @@
-jest.mock('next-axiom', () => ({ log: { error: jest.fn(), info: jest.fn() } }));
+jest.mock('@/libs/axiom-logger', () => ({ log: { error: jest.fn(), info: jest.fn() }, flushAxiom: jest.fn() }));
 
-import { log } from 'next-axiom';
+import { log } from '@/libs/axiom-logger';
 import { getDiscogsMasterRelease, searchDiscogs, getPriceSuggestion, getRating } from './discogs';
 import type { DiscogsItem } from '@/types/discogs';
 

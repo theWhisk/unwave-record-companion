@@ -1,4 +1,4 @@
-import { log } from "next-axiom";
+import { log } from "@/libs/axiom-logger";
 import { Condition, ConditionValues, DiscogsMaster, DiscogsPaginatedSearchResult, DiscogsRatingResponse } from "@/types/discogs";
 
 export async function getDiscogsMasterRelease(masterId: number): Promise<DiscogsMaster> {

@@ -7,7 +7,7 @@ const isConfigured = Boolean(token && dataset);
 const axiomClient = isConfigured
   ? new Axiom({
       token: token!,
-      url: process.env.AXIOM_URL,
+      edgeUrl: process.env.AXIOM_URL,
       onError: (err) => console.error('[axiom]', err),
     })
   : null;

@@ -52,6 +52,11 @@ describe('ConditionSlider', () => {
     expect(screen.getByText('Mint')).toBeInTheDocument();
   });
 
+  it('renders a "Condition" label above the slider', () => {
+    render(<ConditionSlider conditionValues={mockConditionValues} selectedCurrency={Currency.USD} />);
+    expect(screen.getByText('Condition')).toBeInTheDocument();
+  });
+
   it('updates price when slider moves to index 0 (Poor)', () => {
     render(<ConditionSlider conditionValues={mockConditionValues} selectedCurrency={Currency.USD} />);
     const slider = screen.getByRole('slider');

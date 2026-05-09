@@ -6,10 +6,10 @@ jest.mock('wikipedia', () => ({
   },
 }));
 
-jest.mock('next-axiom', () => ({ log: { error: jest.fn(), info: jest.fn() } }));
+jest.mock('@/libs/axiom-logger', () => ({ log: { error: jest.fn(), info: jest.fn() }, flushAxiom: jest.fn() }));
 
 import wiki from 'wikipedia';
-import { log } from 'next-axiom';
+import { log } from '@/libs/axiom-logger';
 import { getWikiSummary, searchWiki } from './wiki';
 
 const mockWiki = wiki as jest.Mocked<typeof wiki>;

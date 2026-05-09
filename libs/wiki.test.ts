@@ -1,77 +1,78 @@
-jest.mock('wikipedia', () => ({
-  __esModule: true,
-  default: {
-    summary: jest.fn(),
-    search: jest.fn(),
-    setUserAgent: jest.fn(),
-  },
-}));
-
 jest.mock('@/libs/axiom-logger', () => ({ log: { error: jest.fn(), info: jest.fn() }, flushAxiom: jest.fn() }));
 
-import wiki from 'wikipedia';
 import { log } from '@/libs/axiom-logger';
 import { getWikiSummary, searchWiki } from './wiki';
 
-const mockWiki = wiki as jest.Mocked<typeof wiki>;
 const mockLog = log as any;
 
 beforeEach(() => {
   jest.clearAllMocks();
-});
-
-describe('getWikiSummary', () => {
-  it('returns the summary from wikipedia', async () => {
-    const mockSummary = { extract: 'A great album about life on the road.' };
-    mockWiki.summary.mockResolvedValueOnce(mockSummary as any);
-
-    const result = await getWikiSummary('Abbey Road');
-
-    expect(result).toEqual(mockSummary);
-    expect(mockWiki.summary).toHaveBeenCalledWith('Abbey Road');
-  });
-
-  it('rethrows as "Error searching Wikipedia" when wiki.summary throws', async () => {
-    mockWiki.summary.mockRejectedValueOnce(new Error('page not found'));
-
-    await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow('Error searching Wikipedia');
-  });
-
-  it('logs the error with log.error when wiki.summary throws', async () => {
-    const err = new Error('page not found');
-    mockWiki.summary.mockRejectedValueOnce(err);
-
-    await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow();
-    expect(mockLog.error).toHaveBeenCalledWith('wiki summary lookup failed', expect.objectContaining({
-      error: { name: err.name, message: err.message, cause: undefined },
-    }));
-  });
+  global.fetch = jest.fn();
 });
 
 describe('searchWiki', () => {
-  it('returns search results from wikipedia', async () => {
-    const mockResults = { results: [{ title: 'Abbey Road (album)', pageid: 1 }] };
-    mockWiki.search.mockResolvedValueOnce(mockResults as any);
+  it('returns search results from the Wikipedia API', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ query: { search: [{ title: 'Abbey Road (album)' }] } }),
+    });
 
     const result = await searchWiki('Abbey Road Beatles');
 
-    expect(result).toEqual(mockResults);
-    expect(mockWiki.search).toHaveBeenCalledWith('Abbey Road Beatles');
+    expect(result).toEqual({ results: [{ title: 'Abbey Road (album)' }] });
   });
 
-  it('rethrows as "Error searching Wikipedia" when wiki.search throws', async () => {
-    mockWiki.search.mockRejectedValueOnce(new Error('network failure'));
+  it('returns empty results when query field is absent', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ query: {} }),
+    });
+
+    const result = await searchWiki('no results query');
+
+    expect(result).toEqual({ results: [] });
+  });
+
+  it('rethrows as "Error searching Wikipedia" when fetch fails', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 403 });
 
     await expect(searchWiki('Abbey Road Beatles')).rejects.toThrow('Error searching Wikipedia');
   });
 
-  it('logs the error with log.error when wiki.search throws', async () => {
-    const err = new Error('network failure');
-    mockWiki.search.mockRejectedValueOnce(err);
+  it('logs the error with log.error when fetch fails', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 403 });
 
     await expect(searchWiki('Abbey Road Beatles')).rejects.toThrow();
     expect(mockLog.error).toHaveBeenCalledWith('wiki search failed', expect.objectContaining({
-      error: { name: err.name, message: err.message, cause: undefined },
+      error: expect.objectContaining({ message: 'HTTP 403' }),
+    }));
+  });
+});
+
+describe('getWikiSummary', () => {
+  it('returns the extract from the Wikipedia REST API', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ extract: 'A great album about life on the road.' }),
+    });
+
+    const result = await getWikiSummary('Abbey Road (album)');
+
+    expect(result).toEqual({ extract: 'A great album about life on the road.' });
+  });
+
+  it('rethrows as "Error searching Wikipedia" when fetch fails', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 404 });
+
+    await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow('Error searching Wikipedia');
+  });
+
+  it('logs the error with log.error when fetch fails', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 404 });
+
+    await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow();
+    expect(mockLog.error).toHaveBeenCalledWith('wiki summary lookup failed', expect.objectContaining({
+      error: expect.objectContaining({ message: 'HTTP 404' }),
     }));
   });
 });

@@ -3,6 +3,7 @@ jest.mock('wikipedia', () => ({
   default: {
     summary: jest.fn(),
     search: jest.fn(),
+    setUserAgent: jest.fn(),
   },
 }));
 

@@ -4,7 +4,9 @@ const token = process.env.AXIOM_TOKEN;
 const dataset = process.env.AXIOM_DATASET;
 const isConfigured = Boolean(token && dataset);
 
-const axiomClient = isConfigured ? new Axiom({ token: token! }) : null;
+const axiomClient = isConfigured
+  ? new Axiom({ token: token!, onError: (err) => console.error('[axiom]', err) })
+  : null;
 
 type Fields = Record<string, unknown>;
 
@@ -23,5 +25,9 @@ export const log = {
 
 export async function flushAxiom(): Promise<void> {
   if (!axiomClient) return;
-  await axiomClient.flush();
+  try {
+    await axiomClient.flush();
+  } catch (err) {
+    console.error('[axiom] flush failed', err);
+  }
 }

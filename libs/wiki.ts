@@ -1,6 +1,10 @@
 import wiki, { wikiSearchResult, wikiSummary } from "wikipedia";
 import { log } from "@/libs/axiom-logger";
 
+// Wikipedia API etiquette requires an identifying User-Agent; the library
+// default is a generic string that gets 403'd from cloud IPs.
+wiki.setUserAgent('CrateMole/1.0 (https://github.com/theWhisk/unwave-record-companion)');
+
 function serializeError(error: unknown): Record<string, unknown> {
     if (error instanceof Error) {
         return {

@@ -41,7 +41,9 @@ describe('getWikiSummary', () => {
     mockWiki.summary.mockRejectedValueOnce(err);
 
     await expect(getWikiSummary('Nonexistent Album')).rejects.toThrow();
-    expect(mockLog.error).toHaveBeenCalledWith('wiki summary lookup failed', expect.objectContaining({ error: err }));
+    expect(mockLog.error).toHaveBeenCalledWith('wiki summary lookup failed', expect.objectContaining({
+      error: { name: err.name, message: err.message, cause: undefined },
+    }));
   });
 });
 
@@ -67,6 +69,8 @@ describe('searchWiki', () => {
     mockWiki.search.mockRejectedValueOnce(err);
 
     await expect(searchWiki('Abbey Road Beatles')).rejects.toThrow();
-    expect(mockLog.error).toHaveBeenCalledWith('wiki search failed', expect.objectContaining({ error: err }));
+    expect(mockLog.error).toHaveBeenCalledWith('wiki search failed', expect.objectContaining({
+      error: { name: err.name, message: err.message, cause: undefined },
+    }));
   });
 });

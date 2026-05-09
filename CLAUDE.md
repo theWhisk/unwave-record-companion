@@ -39,7 +39,7 @@ All Discogs and Wikipedia calls happen server-side — the `DISCOGS_TOKEN` is ne
 
 ### Currency
 
-`CurrencyProvider` (`app/currency-provider.tsx`) fetches exchange rates from `/api/currency` on app load and exposes them via the `useCurrency()` hook. The `/api/currency` route (Route Handler) caches rates in memory for `EXCHANGE_RATE_CACHE_DURATION` ms to stay within the ExchangeRate-API free tier. `AlbumTile` converts Discogs USD prices to the user's selected currency at render time.
+`CurrencyProvider` (`app/currency-provider.tsx`) fetches exchange rates from `/api/currency` on app load and exposes them via the `useCurrency()` hook. The `/api/currency` route (Route Handler) caches rates in memory for `EXCHANGE_RATE_CACHE_DURATION` ms to stay within the ExchangeRate-API free tier. `ConditionSlider` (`app/search/components/ConditionSlider.tsx`) converts Discogs USD prices to the user's selected currency at render time and lets the user slide between conditions (Poor → Mint), defaulting to Very Good+.
 
 ### Key types
 

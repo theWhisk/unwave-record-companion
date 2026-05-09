@@ -63,6 +63,14 @@ jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 
 Playwright e2e tests live in `e2e/search.spec.ts` and exercise the full UI at `/`. Run them with `npm run test:e2e` — the Playwright config starts the dev server automatically. The server-action intercept in those tests targets `'/'` (not `'/search'`) because `findRelease` is a server action and Next.js posts it to the current page URL. To simulate a server action failure, use `route.abort('failed')` — a `route.fulfill({ status: 500 })` response is silently resolved by Next.js's `fetchServerAction` rather than rejected, so the form's `catch` block never runs. When mocking components in Jest render tests, use named function expressions (`function Foo() { return <div />; }`) rather than anonymous arrows to satisfy the `react/display-name` ESLint rule.
 
+### Logging
+
+Structured logging via `@axiomhq/js`. The singleton is in `libs/axiom-logger.ts` and exports `log` (info/warn/error) and `flushAxiom()`. It is a silent no-op when `AXIOM_TOKEN` or `AXIOM_DATASET` are absent — local dev and CI require no Axiom credentials.
+
+In production the logger sends to an EU dataset; the Axiom client must be pointed at the EU edge endpoint via `AXIOM_URL=https://eu-central-1.aws.edge.axiom.co` (the default US endpoint returns a region error). All three env vars (`AXIOM_TOKEN`, `AXIOM_DATASET`, `AXIOM_URL`) are set in Vercel for Production and Preview.
+
+`flushAxiom()` is called in a `finally` block inside `findRelease` to ensure queued events are sent before the serverless function exits. Test files mock `'@/libs/axiom-logger'` rather than the old `'next-axiom'`.
+
 ### Styling
 
 TailwindCSS with DaisyUI component classes. Theme is set via `data-theme` on `<html>` — driven by `config.colors.theme` from `config.ts`. Global styles are in `app/globals.css`.

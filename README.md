@@ -25,6 +25,8 @@ Built by William (william@thewhisk.dev)
 - **Anthropic API** — vision model for album cover identification
 - **Wikipedia npm package** — album summaries
 - **ExchangeRate-API** — currency conversion (cached 24h)
+- **Sentry** — error tracking
+- **Axiom** — structured server-side logging
 - **Jest** (via `next/jest`) + **Playwright** — test suite
 
 ## Local development
@@ -44,6 +46,8 @@ EXCHANGE_RATE_API_KEY=       # from exchangerate-api.com
 EXCHANGE_RATE_CACHE_DURATION=86400000
 ANTHROPIC_API_KEY=           # from console.anthropic.com
 ```
+
+Axiom and Sentry credentials are intentionally omitted from `.env.local` — logs and error reports are production-only. The Axiom logger is a silent no-op when `AXIOM_TOKEN` is absent.
 
 ## Project structure
 
@@ -66,6 +70,11 @@ types/
   discogs.ts                # Discogs API types
   currency.ts               # Currency types
 ```
+
+## Observability
+
+- **Sentry** — catches unhandled exceptions in production. Configured via `NEXT_PUBLIC_SENTRY_DSN`.
+- **Axiom** — structured logging (`log.info/warn/error`) from server-side code. Singleton in `libs/axiom-logger.ts`. Dataset is EU-hosted; requires `AXIOM_URL=https://eu-central-1.aws.edge.axiom.co` alongside `AXIOM_TOKEN` and `AXIOM_DATASET`. All three are set in Vercel — not needed locally.
 
 ## Key design notes
 

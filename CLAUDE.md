@@ -75,6 +75,10 @@ In production the logger sends to an EU dataset; the Axiom client must be pointe
 
 TailwindCSS with DaisyUI component classes. Theme is set via `data-theme` on `<html>` — driven by `config.colors.theme` from `config.ts`. Global styles are in `app/globals.css`.
 
+## Documentation
+
+When making changes that affect the stack, architecture, observability setup, or local dev workflow, update both `CLAUDE.md` (for future Claude sessions) and `README.md` (the owner's reference). The README lives at the project root and is the human-facing equivalent of this file — keep the Stack, Observability, and Key design notes sections in sync.
+
 ## Vision
 
 The long-term goal is frictionless vinyl pricing: point a camera at an album cover and get an estimated price. The intended approach is to send a captured frame to a vision LLM (e.g. Claude Haiku) server-side, extract artist and title, then pass that as a free-text query to the existing Discogs pipeline. Text search is an interim input method on the way to that goal.

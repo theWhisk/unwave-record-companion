@@ -1,22 +1,116 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, lofi, pastel, luxury, business, acid, lemonade, night, coffee, winter, nord, retro;
+}
+
+@theme {
+  --color-unwave-gray: #e4e2dd;
+  --color-dark-gray: #3f3f3f;
+
+  --background-image-gradient: linear-gradient(
+    60deg,
+    #f79533,
+    #f37055,
+    #ef4e7b,
+    #a166ab,
+    #5073b8,
+    #1098ad,
+    #07b39b,
+    #6fba82
+  );
+
+  --animate-opacity: opacity 0.25s ease-in-out;
+  --animate-appearFromRight: appearFromRight 300ms ease-in-out;
+  --animate-wiggle: wiggle 1.5s ease-in-out infinite;
+  --animate-popup: popup 0.25s ease-in-out;
+  --animate-shimmer: shimmer 3s ease-out infinite alternate;
+
+  @keyframes opacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes appearFromRight {
+    0% {
+      opacity: 0.3;
+      transform: translate(15%, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    20%,
+    80%,
+    100% {
+      transform: rotate(0deg);
+    }
+    30%,
+    60% {
+      transform: rotate(-2deg);
+    }
+    40%,
+    70% {
+      transform: rotate(2deg);
+    }
+    45% {
+      transform: rotate(-4deg);
+    }
+    55% {
+      transform: rotate(4deg);
+    }
+  }
+
+  @keyframes popup {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
 
 html,
 body {
   scroll-behavior: smooth !important;
 }
 
-/* It makes the HTML progress bar filling smooth when value change. */
 progress::-webkit-progress-value {
   transition: 0.6s width ease-out;
 }
 
 @layer base {
   .btn-gradient {
-    @apply !bg-gradient !bg-[length:300%_300%] hover:saturate-[1.2] shadow duration-100 !border-0 !border-transparent !bg-transparent animate-shimmer disabled:!bg-none disabled:!bg-gray-500/30  !text-white;
+    @apply bg-gradient! bg-[length:300%_300%]! hover:saturate-[1.2] shadow duration-100 border-0! border-transparent! bg-transparent! animate-shimmer disabled:bg-none! disabled:bg-gray-500/30! text-white!;
   }
   .btn {
-    @apply !capitalize;
+    @apply capitalize!;
   }
 }

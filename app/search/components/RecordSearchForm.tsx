@@ -51,7 +51,7 @@ interface LookUpFormProps {
                 <input 
                     id="search"
                     type="text" 
-                    className="input input-bordered w-full" 
+                    className="input w-full"
                     placeholder="Album name" 
                     {...register("term")} 
                 />

@@ -1,4 +1,3 @@
-import themes from "daisyui/src/theming/themes";
 import { ConfigProps } from "./types/config";
 
 const config = {
@@ -7,7 +6,7 @@ const config = {
   domainName: "unwave.net",
   colors: {
     theme: "lofi",
-    main: themes["light"]["primary"],
+    main: "#0f172a",
   },
 } as ConfigProps;
 

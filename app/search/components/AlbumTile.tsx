@@ -1,48 +1,109 @@
 'use client'
 
+import React from 'react';
 import Image from 'next/image';
 import { ReleaseData } from '../search-service';
 import StarRating from '@/components/StarRating';
 import { Currency } from '@/types/currency';
 import ConditionSlider from './ConditionSlider';
+import { staatliches } from '@/styles/fonts';
 
 interface AlbumTileProps {
-    findRecordResponse: ReleaseData
-    selectedCurrency: Currency
-  }
+    findRecordResponse: ReleaseData;
+    selectedCurrency: Currency;
+}
 
-export default function AlbumTile(props: AlbumTileProps) {
+const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
+
+function Pill({ children, tone = 'neutral' }: { children: React.ReactNode; tone?: 'neutral' | 'clay' }) {
+    const base: React.CSSProperties = {
+        display: 'inline-flex', alignItems: 'center',
+        height: 24, padding: '0 10px',
+        borderRadius: 999, fontSize: 12, letterSpacing: 0.1,
+    };
+    const toneStyle: React.CSSProperties = tone === 'clay'
+        ? { background: 'var(--clay-soft)', color: 'var(--clay-ink)' }
+        : { background: 'transparent', color: 'var(--ink)', boxShadow: 'inset 0 0 0 1px var(--hairline)' };
+    return <span style={{ ...base, ...toneStyle }}>{children}</span>;
+}
+
+export default function AlbumTile({ findRecordResponse: data, selectedCurrency }: AlbumTileProps) {
     return (
-        <><div className="card lg:card-side bg-base-100 shadow-xl">
-            <figure>
-                {<Image src={props.findRecordResponse.image} alt={`Album art for ${props.findRecordResponse.title}`} width={600} height={600} style={{width: '100%', height: 'auto'}}/>}
-            </figure>
-
-            <div className="card-body">
-                <h2 className="card-title">{props.findRecordResponse.title}</h2>
-                <p className="text-sm">by {props.findRecordResponse.artists}</p>
-                <div className="stats">
-                    <div className="stat">
-                        <div className="stat-title">First released in</div>
-                        <div className="stat-value text-indigo-800">{props.findRecordResponse.year}</div>
-                    </div>
+        <div style={{
+            borderRadius: 4, overflow: 'hidden',
+            background: '#fff',
+            boxShadow: '0 1px 0 var(--hairline), 0 12px 28px -16px rgba(60,50,40,0.25)',
+        }}>
+            <div style={{ display: 'flex', padding: 22, gap: 22, alignItems: 'flex-start' }}>
+                {/* Cover art */}
+                <div style={{ position: 'relative', width: 200, height: 200, flexShrink: 0, overflow: 'hidden' }}>
+                    <Image
+                        src={data.image}
+                        alt={`Album art for ${data.title}`}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                    />
                 </div>
-                <ConditionSlider
-                    conditionValues={props.findRecordResponse.originalPriceSuggestion}
-                    selectedCurrency={props.selectedCurrency}
-                />
-                <StarRating average={props.findRecordResponse.rating.average} count={props.findRecordResponse.rating.count} />
 
-                <div className="flex flex-wrap justify-center gap-5">
-                    {props.findRecordResponse.genres.map((genre, index) => (
-                        <span className="badge badge-success gap-2" key={index}>{genre}</span>
-                    ))}
+                {/* Right column */}
+                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    {/* Year · tracks meta */}
+                    <div style={{
+                        fontFamily: MONO, fontSize: 10,
+                        letterSpacing: '0.18em', textTransform: 'uppercase',
+                        color: 'var(--muted)',
+                    }}>
+                        {data.year} · {data.noOfTracks} tracks
+                    </div>
+
+                    {/* Title + artist */}
+                    <div>
+                        <h2 style={{
+                            margin: 0,
+                            fontFamily: staatliches.style.fontFamily,
+                            fontWeight: 400, fontSize: 32, lineHeight: 0.95, letterSpacing: 0.4,
+                        }}>
+                            {data.title}
+                        </h2>
+                        <div style={{ marginTop: 4, fontSize: 14, color: 'var(--dark)' }}>
+                            {data.artists.join(', ')}
+                        </div>
+                    </div>
+
+                    {/* Genre pills */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        {data.genres.map((genre, i) => (
+                            <Pill key={i} tone={i === 0 ? 'clay' : 'neutral'}>{genre}</Pill>
+                        ))}
+                    </div>
+
+                    {/* Star rating */}
+                    <StarRating average={data.rating.average} count={data.rating.count} />
+
+                    {/* Compact condition slider */}
+                    <ConditionSlider
+                        conditionValues={data.originalPriceSuggestion}
+                        selectedCurrency={selectedCurrency}
+                    />
                 </div>
             </div>
-        </div>
-        <div className="mt-4">
-            {props.findRecordResponse.summary && <p>{props.findRecordResponse.summary}</p>}
-        </div></>
 
-    )
+            {/* Wikipedia strip */}
+            {data.summary && (
+                <>
+                    <div style={{ background: 'var(--hairline)', height: 1 }} />
+                    <div style={{ padding: '16px 22px', background: 'var(--soft)' }}>
+                        <div style={{
+                            fontFamily: MONO, fontSize: 10,
+                            letterSpacing: '0.18em', textTransform: 'uppercase',
+                            color: 'var(--muted)', marginBottom: 8,
+                        }}>From Wikipedia</div>
+                        <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: 'var(--dark)' }}>
+                            {data.summary}
+                        </p>
+                    </div>
+                </>
+            )}
+        </div>
+    );
 }

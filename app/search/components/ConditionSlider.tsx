@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Condition, ConditionValues } from '@/types/discogs';
 import { Currency, currencyOptions } from '@/types/currency';
 import { useCurrency } from '@/app/currency-provider';
+import { staatliches } from '@/styles/fonts';
 
 const CONDITIONS = [
     { condition: Condition.Poor,         label: 'Poor' },
@@ -17,6 +18,8 @@ const CONDITIONS = [
 ];
 
 const DEFAULT_INDEX = 5; // Very Good+
+
+const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
 interface ConditionSliderProps {
     conditionValues: ConditionValues | null;
@@ -33,27 +36,41 @@ export default function ConditionSlider({ conditionValues, selectedCurrency }: C
     const rawPrice = conditionValues[selected.condition].value;
     const convertedPrice = Math.round(rawPrice * rates[selectedCurrency]);
     const symbol = currencyOptions[selectedCurrency].symbol;
+    const pct = (selectedIndex / (CONDITIONS.length - 1)) * 100;
 
     return (
-        <div className="flex flex-col items-center gap-2">
-            <p className="text-center">
-                <span className="text-lg font-bold">{symbol}{convertedPrice}</span>
-            </p>
-            <div className="flex w-full flex-col gap-1">
-                <span className="text-xs text-gray-500 text-center">Condition</span>
-                <div className="flex w-full items-center gap-2">
-                    <span className="text-xs text-gray-500">Poor</span>
-                    <input
-                        type="range"
-                        min={0}
-                        max={7}
-                        step={1}
-                        value={selectedIndex}
-                        onChange={(e) => setSelectedIndex(Number(e.target.value))}
-                        className="range range-xs flex-1"
-                    />
-                    <span className="text-xs text-gray-500">Mint</span>
-                </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+                <div style={{
+                    fontFamily: MONO,
+                    fontSize: 10, letterSpacing: '0.16em',
+                    textTransform: 'uppercase', color: 'var(--muted)',
+                }}>Condition</div>
+                <div style={{
+                    fontFamily: staatliches.style.fontFamily,
+                    fontSize: 24, lineHeight: 1,
+                    color: 'var(--clay)', fontVariantNumeric: 'tabular-nums',
+                }}>{symbol}{convertedPrice}</div>
+            </div>
+            <input
+                type="range"
+                min={0}
+                max={CONDITIONS.length - 1}
+                step={1}
+                value={selectedIndex}
+                onChange={(e) => setSelectedIndex(Number(e.target.value))}
+                className="cm-range"
+                style={{ '--cm-fill': `${pct}%` } as React.CSSProperties}
+                aria-label="Condition"
+            />
+            <div style={{
+                display: 'flex', justifyContent: 'space-between',
+                fontFamily: MONO,
+                fontSize: 9, letterSpacing: '0.14em',
+                color: 'var(--muted)', textTransform: 'uppercase',
+            }}>
+                <span>Poor</span>
+                <span>Mint</span>
             </div>
         </div>
     );

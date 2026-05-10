@@ -19,7 +19,7 @@ Built by William (william@thewhisk.dev)
 
 ## Stack
 
-- **Next.js 14** (App Router, TypeScript, server actions)
+- **Next.js 16** (App Router, TypeScript, server actions)
 - **TailwindCSS** + **DaisyUI** for styling
 - **Discogs API** — record database, marketplace pricing, ratings
 - **Anthropic API** — vision model for album cover identification

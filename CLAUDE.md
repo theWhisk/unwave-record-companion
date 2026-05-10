@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run dev       # Start dev server (localhost:3000)
 npm run build     # Production build
-npm run lint      # ESLint via next lint
+npm run lint      # ESLint 9 (eslint.config.mjs)
 npm test          # Run Jest test suite
 npm run test:e2e  # Run Playwright e2e suite (starts dev server automatically)
 ```
@@ -22,7 +22,7 @@ EXCHANGE_RATE_CACHE_DURATION=86400000
 
 ## Architecture
 
-**Crate Mole** is a Next.js 14 App Router app. Users search for a vinyl record; the app returns pricing by condition, ratings, genre tags, album art, and a Wikipedia summary.
+**Crate Mole** is a Next.js 16 App Router app. Users search for a vinyl record; the app returns pricing by condition, ratings, genre tags, album art, and a Wikipedia summary.
 
 ### Request flow
 

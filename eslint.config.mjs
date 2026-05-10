@@ -28,14 +28,6 @@ const config = [
       'no-unused-vars': ['warn', unusedVarsConfig],
     },
   },
-  {
-    // react-hooks/set-state-in-effect is a new rule in eslint-plugin-react-hooks v5
-    // (shipped with Next.js 16). Turned off; the existing useEffect reset patterns
-    // in this codebase are intentional and require separate refactoring work.
-    rules: {
-      'react-hooks/set-state-in-effect': 'off',
-    },
-  },
 ];
 
 export default config;

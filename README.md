@@ -20,7 +20,7 @@ Built by William (william@thewhisk.dev)
 ## Stack
 
 - **Next.js 16** (App Router, TypeScript, server actions)
-- **TailwindCSS** + **DaisyUI** for styling
+- **TailwindCSS v4** + **DaisyUI v5** for styling (CSS-first config in `app/globals.css`)
 - **Discogs API** — record database, marketplace pricing, ratings
 - **Anthropic API** — vision model for album cover identification
 - **Wikipedia npm package** — album summaries

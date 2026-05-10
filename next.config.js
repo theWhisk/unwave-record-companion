@@ -4,7 +4,9 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["i.discogs.com"],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'i.discogs.com' },
+    ],
   },
   async redirects() {
     return [{ source: '/search', destination: '/', permanent: true }];

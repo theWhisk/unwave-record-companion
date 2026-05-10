@@ -29,15 +29,15 @@ const MOCK_RELEASE_DATA = {
   rating: { count: 5000, average: 4.5 },
 };
 
-// React Flight wire format for a Next.js server action that returns a plain object.
+// React Flight wire format for a Next.js 15 server action that returns a plain object.
 // Row 1: the ReleaseData payload (JSON-serialised).
-// Row 0: the [actionResult, [, actionFlightData]] tuple the router reducer expects.
-//   "$@1" is a React Flight promise-reference that resolves to row 1.
-//   The outer Promise returned by callServer chains to this reference, so
-//   `await findRelease(...)` ultimately resolves to the ReleaseData value.
+// Row 0: the {a, f, b} object the router reducer expects (Next.js 15 changed from the
+//   old array format to a named-property object; server writes `a: actionResult,
+//   f: flightData, b: buildId` in app-render.js; client reads `response.a`).
+//   "$@1" is a React Flight lazy-reference that resolves to row 1.
 const RSC_ACTION_BODY = [
   `1:${JSON.stringify(MOCK_RELEASE_DATA)}`,
-  `0:["$@1",[null,null]]`,
+  `0:{"a":"$@1","f":[],"b":""}`,
 ].join('\n') + '\n';
 
 test.beforeEach(async ({ page }) => {

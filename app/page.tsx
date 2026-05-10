@@ -1,6 +1,7 @@
 'use client'
 
-import { Suspense, useState } from "react";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AlbumTile from "@/app/search/components/AlbumTile";
@@ -11,6 +12,7 @@ import { CurrencySelector } from "@/components/CurrencySelector";
 import { Currency } from "@/types/currency";
 
 export default function Home() {
+  const pathname = usePathname();
   const [findRecordResponse, setRecordResponse] = useState<ReleaseData>();
   const [searchAttempted, setSearchAttempted] = useState<boolean>(false);
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(Currency.USD);
@@ -26,9 +28,7 @@ export default function Home() {
 
   return (
     <>
-      <Suspense>
-        <Header />
-      </Suspense>
+      <Header key={pathname} />
       <main className="min-h-screen p-8 pb-24">
         <section className="max-w-xl mx-auto space-y-8 flex justify-end">
           <CurrencySelector onCurrencyChange={handleCurrencyChange} />

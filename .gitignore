@@ -32,7 +32,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+# next-env.d.ts is intentionally tracked — CI needs it for tsc --noEmit
+# (Next.js 16 + moduleResolution:bundler requires it to resolve image imports)
 
 # public
 public/robots.txt

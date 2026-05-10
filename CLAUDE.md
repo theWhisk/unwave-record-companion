@@ -73,7 +73,7 @@ In production the logger sends to an EU dataset; the Axiom client must be pointe
 
 ### Styling
 
-TailwindCSS with DaisyUI component classes. Theme is set via `data-theme` on `<html>` — driven by `config.colors.theme` from `config.ts`. Global styles are in `app/globals.css`.
+TailwindCSS v4 with DaisyUI v5 component classes. Both use CSS-first configuration: there is no `tailwind.config.js`. All theme tokens, custom colors, keyframes, animations, and the DaisyUI plugin (`@plugin "daisyui"`) and theme list are declared in `app/globals.css` via `@import "tailwindcss"` and `@theme {}`. The PostCSS pipeline uses `@tailwindcss/postcss` (no `autoprefixer`). The runtime DaisyUI theme is set via `data-theme` on `<html>` — driven by `config.colors.theme` from `config.ts`.
 
 ## Documentation
 

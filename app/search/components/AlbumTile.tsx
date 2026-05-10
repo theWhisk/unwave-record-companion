@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react';
 import Image from 'next/image';
 import { ReleaseData } from '../search-service';
 import StarRating from '@/components/StarRating';

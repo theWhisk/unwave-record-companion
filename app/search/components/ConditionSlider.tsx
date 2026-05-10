@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Condition, ConditionValues } from '@/types/discogs';
 import { Currency, currencyOptions } from '@/types/currency';
 import { useCurrency } from '@/app/currency-provider';

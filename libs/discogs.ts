@@ -1,5 +1,5 @@
 import { log } from "@/libs/axiom-logger";
-import { Condition, ConditionValues, DiscogsMaster, DiscogsPaginatedSearchResult, DiscogsRatingResponse } from "@/types/discogs";
+import { ConditionValues, DiscogsMaster, DiscogsPaginatedSearchResult, DiscogsRatingResponse } from "@/types/discogs";
 
 export async function getDiscogsMasterRelease(masterId: number): Promise<DiscogsMaster> {
     const response = await fetch(`https://api.discogs.com/masters/${masterId.toString()}`, {
@@ -11,7 +11,7 @@ export async function getDiscogsMasterRelease(masterId: number): Promise<Discogs
     return result;
 }
 
-export async function searchDiscogs(query: string, type: string, format: string): Promise<DiscogsPaginatedSearchResult> {
+export async function searchDiscogs(query: string, _type: string, _format: string): Promise<DiscogsPaginatedSearchResult> {
     try {
         const queryParams = {
             type: "release",

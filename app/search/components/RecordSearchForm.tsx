@@ -28,7 +28,7 @@ interface LookUpFormProps {
         try {
             const response = await findRelease(data.term.trim());
             onRecordSearch(response);
-        } catch (error) {
+        } catch {
             setError("term", { type: "manual", message: "Couldn't find release" });
         }finally {
             setLoading(false);

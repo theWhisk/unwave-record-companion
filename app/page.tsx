@@ -136,7 +136,7 @@ function LoadingState() {
 export default function Home() {
   const [resultState, setResultState] = useState<ResultState>('empty');
   const [findRecordResponse, setRecordResponse] = useState<ReleaseData | undefined>();
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(Currency.USD);
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(Currency.EUR);
 
   const handleRecordSearch = (data: ReleaseData) => {
     setRecordResponse(data);
@@ -165,32 +165,13 @@ export default function Home() {
               padding: '28px 32px',
               overflow: 'hidden',
             }}>
-              <div style={{
-                display: 'flex', alignItems: 'center',
-                justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 14,
-              }}>
+              <div style={{ marginBottom: 14 }}>
                 <span style={{
                   fontFamily: MONO, fontSize: 10, letterSpacing: '0.18em',
                   textTransform: 'uppercase', color: 'var(--muted)',
                 }}>
                   Search · by title or artist
                 </span>
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  padding: '6px 10px',
-                  boxShadow: 'inset 0 0 0 1px var(--hairline)',
-                  borderRadius: 2,
-                  maxWidth: '100%',
-                }}>
-                  <span style={{
-                    fontFamily: MONO, fontSize: 9, letterSpacing: '0.2em',
-                    textTransform: 'uppercase', color: 'var(--muted)',
-                    flexShrink: 0,
-                  }}>
-                    Currency
-                  </span>
-                  <CurrencySelector onCurrencyChange={setSelectedCurrency} />
-                </div>
               </div>
 
               <LookUpForm
@@ -222,10 +203,18 @@ export default function Home() {
               fontFamily: MONO, fontSize: 10,
               letterSpacing: '0.16em', textTransform: 'uppercase',
               color: 'var(--muted)',
-              display: 'flex', justifyContent: 'space-between',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
             }}>
-              <span>Data · Discogs API</span>
-              <span>Notes · Wikipedia</span>
+              <span>Discogs · Wikipedia</span>
+              <CurrencySelector
+                onCurrencyChange={setSelectedCurrency}
+                selectStyle={{
+                  appearance: 'none', border: 'none', background: 'transparent',
+                  fontFamily: MONO, fontSize: 10, letterSpacing: '0.16em',
+                  textTransform: 'uppercase', color: 'var(--muted)',
+                  cursor: 'pointer', maxWidth: 60,
+                }}
+              />
             </div>
           </div>
 

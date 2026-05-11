@@ -76,4 +76,21 @@ describe('ConditionSlider', () => {
     // VG+ value=30, GBP rate=0.79: Math.round(30 * 0.79) = 24
     expect(screen.getByText('£24')).toBeInTheDocument();
   });
+
+  it('defaults to estimated condition when initialCondition is Condition.VeryGood', () => {
+    render(<ConditionSlider conditionValues={mockConditionValues} selectedCurrency={Currency.USD} initialCondition={Condition.VeryGood} />);
+    // VeryGood value = 20, USD rate = 1 → $20
+    expect(screen.getByText('$20')).toBeInTheDocument();
+  });
+
+  it('defaults to VG+ when initialCondition is null', () => {
+    render(<ConditionSlider conditionValues={mockConditionValues} selectedCurrency={Currency.USD} initialCondition={null} />);
+    // VG+ value = 30, USD rate = 1 → $30
+    expect(screen.getByText('$30')).toBeInTheDocument();
+  });
+
+  it('defaults to VG+ when initialCondition is not provided', () => {
+    render(<ConditionSlider conditionValues={mockConditionValues} selectedCurrency={Currency.USD} />);
+    expect(screen.getByText('$30')).toBeInTheDocument();
+  });
 });

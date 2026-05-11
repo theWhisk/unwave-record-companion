@@ -21,13 +21,20 @@ const DEFAULT_INDEX = 5; // Very Good+
 
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
+function getInitialIndex(condition: Condition | null | undefined): number {
+    if (!condition) return DEFAULT_INDEX;
+    const idx = CONDITIONS.findIndex(c => c.condition === condition);
+    return idx >= 0 ? idx : DEFAULT_INDEX;
+}
+
 interface ConditionSliderProps {
     conditionValues: ConditionValues | null;
     selectedCurrency: Currency;
+    initialCondition?: Condition | null;
 }
 
-export default function ConditionSlider({ conditionValues, selectedCurrency }: ConditionSliderProps) {
-    const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
+export default function ConditionSlider({ conditionValues, selectedCurrency, initialCondition }: ConditionSliderProps) {
+    const [selectedIndex, setSelectedIndex] = useState(() => getInitialIndex(initialCondition));
     const { rates } = useCurrency();
 
     if (!conditionValues) return null;

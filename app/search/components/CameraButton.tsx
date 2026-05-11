@@ -2,15 +2,23 @@
 
 import { ChangeEvent, useRef, useState } from 'react';
 import { findRelease, ReleaseData } from '@/app/search/search-service';
+import { Condition } from '@/types/discogs';
 import { resizeImage } from './resize-image';
 
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
 const MAX_FILE_SIZE = 52_428_800; // 50 MB — hard cap before canvas resize
 
+const VALID_CONDITIONS = new Set<string>(Object.values(Condition));
+
+function parseCondition(raw: string | null | undefined): Condition | null {
+  if (!raw) return null;
+  return VALID_CONDITIONS.has(raw) ? (raw as Condition) : null;
+}
+
 export async function handleCameraCapture(
   file: File | null | undefined,
-  onRecordSearch: (_data: ReleaseData) => void,
+  onRecordSearch: (_data: ReleaseData, _condition: Condition | null) => void,
   setLoading: (_loading: boolean) => void,
   setError: (_error: string) => void,
   onLoadingChange?: (_loading: boolean) => void,
@@ -26,6 +34,7 @@ export async function handleCameraCapture(
   onLoadingChange?.(true);
 
   let query: string;
+  let condition: Condition | null = null;
   try {
     const resized = await resizeImage(file);
     const compressed = new File([resized], file.name, { type: 'image/jpeg' });
@@ -51,6 +60,7 @@ export async function handleCameraCapture(
     }
 
     query = body.query as string;
+    condition = parseCondition(body.condition ?? null);
   } catch {
     setError('Network error — check your connection');
     setLoading(false);
@@ -67,7 +77,7 @@ export async function handleCameraCapture(
 
   try {
     const data = await findRelease(query);
-    onRecordSearch(data);
+    onRecordSearch(data, condition);
   } catch {
     setError("Couldn't find this record in the database — try searching manually");
     setLoading(false);
@@ -80,7 +90,7 @@ export async function handleCameraCapture(
 }
 
 interface CameraButtonProps {
-  onRecordSearch: (_data: ReleaseData) => void;
+  onRecordSearch: (_data: ReleaseData, _condition: Condition | null) => void;
   onLoadingChange?: (_loading: boolean) => void;
 }
 

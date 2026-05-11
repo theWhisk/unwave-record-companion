@@ -5,12 +5,14 @@ import Image from 'next/image';
 import { ReleaseData } from '../search-service';
 import StarRating from '@/components/StarRating';
 import { Currency } from '@/types/currency';
+import { Condition } from '@/types/discogs';
 import ConditionSlider from './ConditionSlider';
 import { staatliches } from '@/styles/fonts';
 
 interface AlbumTileProps {
     findRecordResponse: ReleaseData;
     selectedCurrency: Currency;
+    estimatedCondition?: Condition | null;
 }
 
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
@@ -27,7 +29,7 @@ function Pill({ children, tone = 'neutral' }: { children: React.ReactNode; tone?
     return <span style={{ ...base, ...toneStyle }}>{children}</span>;
 }
 
-export default function AlbumTile({ findRecordResponse: data, selectedCurrency }: AlbumTileProps) {
+export default function AlbumTile({ findRecordResponse: data, selectedCurrency, estimatedCondition }: AlbumTileProps) {
     return (
         <div style={{
             borderRadius: 4, overflow: 'hidden',
@@ -84,6 +86,7 @@ export default function AlbumTile({ findRecordResponse: data, selectedCurrency }
                     <ConditionSlider
                         conditionValues={data.originalPriceSuggestion}
                         selectedCurrency={selectedCurrency}
+                        initialCondition={estimatedCondition}
                     />
                 </div>
             </div>

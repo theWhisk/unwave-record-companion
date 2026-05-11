@@ -9,6 +9,7 @@ import CameraButton from '@/app/search/components/CameraButton';
 import { ReleaseData } from '@/app/search/search-service';
 import { CurrencySelector } from '@/components/CurrencySelector';
 import { Currency } from '@/types/currency';
+import { Condition } from '@/types/discogs';
 import { staatliches } from '@/styles/fonts';
 
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
@@ -137,9 +138,11 @@ export default function Home() {
   const [resultState, setResultState] = useState<ResultState>('empty');
   const [findRecordResponse, setRecordResponse] = useState<ReleaseData | undefined>();
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(Currency.EUR);
+  const [estimatedCondition, setEstimatedCondition] = useState<Condition | null>(null);
 
-  const handleRecordSearch = (data: ReleaseData) => {
+  const handleRecordSearch = (data: ReleaseData, condition: Condition | null = null) => {
     setRecordResponse(data);
+    setEstimatedCondition(condition);
     setResultState('result');
   };
 
@@ -225,6 +228,7 @@ export default function Home() {
               <AlbumTile
                 findRecordResponse={findRecordResponse}
                 selectedCurrency={selectedCurrency}
+                estimatedCondition={estimatedCondition}
               />
             )}
           </div>

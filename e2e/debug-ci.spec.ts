@@ -9,19 +9,34 @@ test('CI overflow debug — find offending element', async ({ page }) => {
   await page.waitForLoadState('networkidle');
 
   const data = await page.evaluate(() => {
+    const layout = document.querySelector('.cm-layout') as HTMLElement | null;
+    const searchCol = document.querySelector('.cm-search-col') as HTMLElement | null;
+    const resultCol = document.querySelector('.cm-result-col') as HTMLElement | null;
+    const computedLayout = layout ? window.getComputedStyle(layout) : null;
+    const mqFired = window.matchMedia('(max-width: 1080px)').matches;
+
     const overflowing: string[] = [];
     document.querySelectorAll('*').forEach((el) => {
       const e = el as HTMLElement;
       if (e.scrollWidth > e.offsetWidth + 2) {
         overflowing.push(
-          `${e.tagName}[class="${e.className.toString().slice(0, 40)}"] sw=${e.scrollWidth} ow=${e.offsetWidth} outerHTML="${e.outerHTML.slice(0, 120)}"`
+          `${e.tagName}[${e.className.toString().slice(0, 40)}] sw=${e.scrollWidth} ow=${e.offsetWidth}`
         );
       }
     });
+
     return {
       htmlScrollWidth: document.documentElement.scrollWidth,
       innerWidth: window.innerWidth,
-      overflowing: overflowing.slice(0, 20),
+      mqFired,
+      layoutGridCols: computedLayout?.gridTemplateColumns ?? 'N/A',
+      layoutOW: layout?.offsetWidth ?? -1,
+      layoutSW: layout?.scrollWidth ?? -1,
+      searchColOW: searchCol?.offsetWidth ?? -1,
+      searchColSW: searchCol?.scrollWidth ?? -1,
+      resultColOW: resultCol?.offsetWidth ?? -1,
+      resultColSW: resultCol?.scrollWidth ?? -1,
+      overflowing: overflowing.slice(0, 10),
     };
   });
 

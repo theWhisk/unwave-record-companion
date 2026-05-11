@@ -127,3 +127,8 @@ export type ConditionValues = {
         value: number;
     };
 };
+
+export interface IdentifyResponse {
+    query: string;
+    condition: string | null;
+}

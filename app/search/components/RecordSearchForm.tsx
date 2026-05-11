@@ -3,11 +3,12 @@
 import { ReleaseData, findRelease } from '@/app/search/search-service';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
+import { Condition } from '@/types/discogs';
 
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
 interface LookUpFormProps {
-  onRecordSearch: (_data: ReleaseData) => void;
+  onRecordSearch: (_data: ReleaseData, _condition?: Condition | null) => void;
   onLoadingChange?: (_loading: boolean) => void;
 }
 

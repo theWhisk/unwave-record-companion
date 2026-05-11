@@ -1,5 +1,6 @@
 import { handleCameraCapture } from './CameraButton';
 import { findRelease, ReleaseData } from '@/app/search/search-service';
+import { Condition } from '@/types/discogs';
 
 jest.mock('@/app/search/search-service', () => ({ findRelease: jest.fn() }));
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
@@ -39,7 +40,7 @@ beforeEach(() => {
 
   jest.spyOn(global, 'fetch').mockResolvedValue({
     ok: true,
-    json: () => Promise.resolve({ query: 'Pink Floyd - The Dark Side of the Moon' }),
+    json: () => Promise.resolve({ query: 'Pink Floyd - The Dark Side of the Moon', condition: 'Very Good (VG)' }),
   } as Response);
 
   mockFindRelease.mockResolvedValue(MOCK_RELEASE);
@@ -115,7 +116,7 @@ describe('handleCameraCapture', () => {
   it('sets error and skips findRelease when API returns query "UNKNOWN"', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ query: 'UNKNOWN' }),
+      json: () => Promise.resolve({ query: 'UNKNOWN', condition: null }),
     } as Response);
 
     await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);
@@ -163,13 +164,46 @@ describe('handleCameraCapture', () => {
     expect(mockFindRelease).toHaveBeenCalledWith('Pink Floyd - The Dark Side of the Moon');
   });
 
-  it('calls onRecordSearch with the ReleaseData from findRelease', async () => {
+  it('calls onRecordSearch with ReleaseData and parsed Condition when condition is valid', async () => {
     await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);
 
-    expect(onRecordSearch).toHaveBeenCalledWith(MOCK_RELEASE);
+    expect(onRecordSearch).toHaveBeenCalledWith(MOCK_RELEASE, Condition.VeryGood);
   });
 
-  it('sets "Couldn\'t find this record" error and skips onRecordSearch when findRelease throws', async () => {
+  it('calls onRecordSearch with null condition when API returns null condition', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ query: 'Pink Floyd - The Dark Side of the Moon', condition: null }),
+    } as Response);
+
+    await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);
+
+    expect(onRecordSearch).toHaveBeenCalledWith(MOCK_RELEASE, null);
+  });
+
+  it('calls onRecordSearch with null condition when API returns unrecognised condition string', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ query: 'Pink Floyd - The Dark Side of the Moon', condition: 'Excellent' }),
+    } as Response);
+
+    await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);
+
+    expect(onRecordSearch).toHaveBeenCalledWith(MOCK_RELEASE, null);
+  });
+
+  it('calls onRecordSearch with null condition when condition field is missing from API response', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ query: 'Pink Floyd - The Dark Side of the Moon' }),
+    } as Response);
+
+    await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);
+
+    expect(onRecordSearch).toHaveBeenCalledWith(MOCK_RELEASE, null);
+  });
+
+  it("sets \"Couldn't find this record\" error and skips onRecordSearch when findRelease throws", async () => {
     mockFindRelease.mockRejectedValueOnce(new Error('Not found'));
 
     await handleCameraCapture(makeFile(), onRecordSearch, setLoading, setError);

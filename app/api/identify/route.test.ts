@@ -1,4 +1,7 @@
-const MOCK_TEXT_BLOCK = { type: 'text', text: 'Pink Floyd - The Dark Side of the Moon' };
+const MOCK_TEXT_BLOCK = {
+  type: 'text',
+  text: '{"query":"Pink Floyd - The Dark Side of the Moon","condition":"Very Good (VG)"}',
+};
 
 let mockCreate: jest.Mock;
 
@@ -27,23 +30,29 @@ afterEach(() => {
 });
 
 describe('POST /api/identify', () => {
-  it('returns 200 and { query } when Claude identifies the album', async () => {
+  it('returns 200 and { query, condition } when Claude identifies the album', async () => {
     const { POST } = await import('./route');
     const res = await POST(makeRequest(makeFile()));
 
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ query: 'Pink Floyd - The Dark Side of the Moon' });
+    expect(await res.json()).toEqual({
+      query: 'Pink Floyd - The Dark Side of the Moon',
+      condition: 'Very Good (VG)',
+    });
   });
 
-  it('trims whitespace from Claude response', async () => {
+  it('trims whitespace from query inside JSON response', async () => {
     mockCreate.mockResolvedValueOnce({
-      content: [{ type: 'text', text: '  Pink Floyd - The Dark Side of the Moon  \n' }],
+      content: [{ type: 'text', text: '  {"query":"  Pink Floyd - The Dark Side of the Moon  ","condition":null}  \n' }],
     });
 
     const { POST } = await import('./route');
     const res = await POST(makeRequest(makeFile()));
 
-    expect(await res.json()).toEqual({ query: 'Pink Floyd - The Dark Side of the Moon' });
+    expect(await res.json()).toEqual({
+      query: 'Pink Floyd - The Dark Side of the Moon',
+      condition: null,
+    });
   });
 
   it('calls Anthropic with model claude-haiku-4-5 and base64 image source', async () => {
@@ -77,24 +86,59 @@ describe('POST /api/identify', () => {
     );
   });
 
-  it('returns 200 + { query: "UNKNOWN" } when Claude returns "UNKNOWN"', async () => {
-    mockCreate.mockResolvedValueOnce({ content: [{ type: 'text', text: 'UNKNOWN' }] });
+  it('uses max_tokens of at least 200', async () => {
+    const { POST } = await import('./route');
+    await POST(makeRequest(makeFile()));
+
+    const callArgs = mockCreate.mock.calls[0][0];
+    expect(callArgs.max_tokens).toBeGreaterThanOrEqual(200);
+  });
+
+  it('returns 200 + { query: "UNKNOWN", condition: null } when Claude returns UNKNOWN JSON', async () => {
+    mockCreate.mockResolvedValueOnce({
+      content: [{ type: 'text', text: '{"query":"UNKNOWN","condition":null}' }],
+    });
 
     const { POST } = await import('./route');
     const res = await POST(makeRequest(makeFile()));
 
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ query: 'UNKNOWN' });
+    expect(await res.json()).toEqual({ query: 'UNKNOWN', condition: null });
   });
 
-  it('returns 200 + { query: "UNKNOWN" } when Claude response has no text block', async () => {
+  it('returns 200 + { query: "UNKNOWN", condition: null } when Claude response has no text block', async () => {
     mockCreate.mockResolvedValueOnce({ content: [] });
 
     const { POST } = await import('./route');
     const res = await POST(makeRequest(makeFile()));
 
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ query: 'UNKNOWN' });
+    expect(await res.json()).toEqual({ query: 'UNKNOWN', condition: null });
+  });
+
+  it('returns condition: null when Claude returns null for condition', async () => {
+    mockCreate.mockResolvedValueOnce({
+      content: [{ type: 'text', text: '{"query":"Pink Floyd - The Dark Side of the Moon","condition":null}' }],
+    });
+
+    const { POST } = await import('./route');
+    const res = await POST(makeRequest(makeFile()));
+
+    expect(await res.json()).toEqual({
+      query: 'Pink Floyd - The Dark Side of the Moon',
+      condition: null,
+    });
+  });
+
+  it('returns { query: "UNKNOWN", condition: null } when Claude returns invalid JSON', async () => {
+    mockCreate.mockResolvedValueOnce({
+      content: [{ type: 'text', text: 'not valid json at all' }],
+    });
+
+    const { POST } = await import('./route');
+    const res = await POST(makeRequest(makeFile()));
+
+    expect(await res.json()).toEqual({ query: 'UNKNOWN', condition: null });
   });
 
   it('returns 400 when no image field in FormData', async () => {

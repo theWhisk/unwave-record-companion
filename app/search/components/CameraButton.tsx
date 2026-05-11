@@ -1,9 +1,10 @@
 'use client';
 
 import { ChangeEvent, useRef, useState } from 'react';
-import { CameraIcon } from '@heroicons/react/24/solid';
 import { findRelease, ReleaseData } from '@/app/search/search-service';
 import { resizeImage } from './resize-image';
+
+const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
 const MAX_FILE_SIZE = 52_428_800; // 50 MB — hard cap before canvas resize
 
@@ -12,6 +13,7 @@ export async function handleCameraCapture(
   onRecordSearch: (_data: ReleaseData) => void,
   setLoading: (_loading: boolean) => void,
   setError: (_error: string) => void,
+  onLoadingChange?: (_loading: boolean) => void,
 ) {
   if (!file) return;
 
@@ -21,6 +23,7 @@ export async function handleCameraCapture(
   }
 
   setLoading(true);
+  onLoadingChange?.(true);
 
   let query: string;
   try {
@@ -34,6 +37,7 @@ export async function handleCameraCapture(
     if (!res.ok) {
       setError('Could not reach the server — try again');
       setLoading(false);
+      onLoadingChange?.(false);
       return;
     }
 
@@ -42,6 +46,7 @@ export async function handleCameraCapture(
     if (body.error) {
       setError('Could not reach the server — try again');
       setLoading(false);
+      onLoadingChange?.(false);
       return;
     }
 
@@ -49,12 +54,14 @@ export async function handleCameraCapture(
   } catch {
     setError('Network error — check your connection');
     setLoading(false);
+    onLoadingChange?.(false);
     return;
   }
 
   if (query === 'UNKNOWN') {
     setError("Couldn't identify this cover — try better lighting or search manually");
     setLoading(false);
+    onLoadingChange?.(false);
     return;
   }
 
@@ -64,17 +71,29 @@ export async function handleCameraCapture(
   } catch {
     setError("Couldn't find this record in the database — try searching manually");
     setLoading(false);
+    onLoadingChange?.(false);
     return;
   }
 
   setLoading(false);
+  onLoadingChange?.(false);
 }
 
 interface CameraButtonProps {
   onRecordSearch: (_data: ReleaseData) => void;
+  onLoadingChange?: (_loading: boolean) => void;
 }
 
-export default function CameraButton({ onRecordSearch }: CameraButtonProps) {
+function CameraGlyph() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M4 8h3l2-2.5h6L17 8h3v11H4z" strokeLinejoin="round" />
+      <circle cx="12" cy="13.5" r="3.5" />
+    </svg>
+  );
+}
+
+export default function CameraButton({ onRecordSearch, onLoadingChange }: CameraButtonProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
@@ -82,7 +101,7 @@ export default function CameraButton({ onRecordSearch }: CameraButtonProps) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setError('');
-    handleCameraCapture(file, onRecordSearch, setLoading, setError);
+    handleCameraCapture(file, onRecordSearch, setLoading, setError, onLoadingChange);
     e.target.value = '';
   };
 
@@ -98,24 +117,31 @@ export default function CameraButton({ onRecordSearch }: CameraButtonProps) {
       />
       <button
         type="button"
-        className="btn btn-primary w-full gap-2"
+        className="w-full"
         onClick={() => fileInputRef.current?.click()}
         disabled={loading}
+        style={{
+          height: 52, background: 'transparent', color: 'var(--ink)',
+          boxShadow: 'inset 0 0 0 1px var(--ink)', border: 'none',
+          fontFamily: MONO, fontSize: 12, letterSpacing: '0.18em',
+          textTransform: 'uppercase', cursor: loading ? 'default' : 'pointer',
+          borderRadius: 2, opacity: loading ? 0.6 : 1,
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+        }}
       >
-        {loading ? <span className="loading loading-spinner" /> : <CameraIcon className="h-5 w-5" />}
+        <CameraGlyph />
         {loading ? 'Identifying cover…' : 'Scan a cover'}
       </button>
       <p className="hidden md:block text-xs text-center text-base-content/40 mt-1">
         Opens a file picker on desktop
       </p>
+      {/* Loading skeleton retained for test coverage */}
       {loading && (
-        <div className="card bg-base-200 animate-pulse mt-2">
-          <figure className="h-48 bg-base-300 rounded-t-2xl" />
-          <div className="card-body gap-3">
-            <div className="h-5 bg-base-300 rounded w-3/4" />
-            <div className="h-4 bg-base-300 rounded w-1/2" />
-            <div className="h-4 bg-base-300 rounded w-1/3" />
-          </div>
+        <div className="animate-pulse" style={{ marginTop: 8 }}>
+          <div style={{
+            height: 6, background: 'var(--hairline)', borderRadius: 999,
+            width: '60%', margin: '0 auto',
+          }} />
         </div>
       )}
       {error && (

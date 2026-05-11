@@ -167,6 +167,23 @@
   cursor: grab;
 }
 
+/* Two-column page layout */
+.cm-layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 420px) minmax(600px, 1fr);
+  gap: 32px;
+  margin-top: 16px;
+  align-items: start;
+}
+.cm-search-col { position: sticky; top: 24px; }
+@media (max-width: 1080px) {
+  .cm-layout { grid-template-columns: 1fr; }
+  .cm-search-col { position: static; max-width: 640px; margin: 0 auto; }
+  .cm-result-col { max-width: 640px; margin: 0 auto; width: 100%; }
+}
+
+@keyframes cm-pulse { 0%, 100% { opacity: 0.55 } 50% { opacity: 1 } }
+
 html,
 body {
   scroll-behavior: smooth !important;

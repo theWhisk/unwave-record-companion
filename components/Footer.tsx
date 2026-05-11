@@ -1,71 +1,75 @@
-import Link from "next/link";
-import Image from "next/image";
-import config from "@/config";
-import logo from "@/app/icon.png";
+import React from 'react';
+import Link from 'next/link';
+import { staatliches } from '@/styles/fonts';
 
-// Add the Footer to the bottom of your landing page and more.
-// The support link is connected to the config.js file. If there's no config.mailgun.supportEmail, the link won't be displayed.
+const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
-const Footer = () => {
+function MonoLabel({ children }: { children: React.ReactNode }) {
   return (
-    <footer className="bg-base-200 border-t border-base-content/10">
-      <div className="max-w-7xl mx-auto px-8 py-24">
-        <div className=" flex lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-          <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-            <Link
-              href="/#"
-              aria-current="page"
-              className="flex gap-2 justify-center md:justify-start items-center"
-            >
-              <Image
-                src={logo}
-                alt={`${config.appName} logo`}
-                priority={true}
-                className="w-6 h-6"
-                width={24}
-                height={24}
-              />
-              <strong className="font-extrabold tracking-tight text-base md:text-lg">
-                {config.appName}
-              </strong>
-            </Link>
+    <span style={{
+      fontFamily: MONO, fontSize: 10, letterSpacing: '0.18em',
+      textTransform: 'uppercase', color: 'var(--muted)',
+    }}>
+      {children}
+    </span>
+  );
+}
 
-            <p className="mt-3 text-sm text-base-content/80">
-              {config.appDescription}
-            </p>
-            <p className="mt-3 text-sm text-base-content/60">
-              Copyright © {new Date().getFullYear()} - All rights reserved
-            </p>
+function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <MonoLabel>{title}</MonoLabel>
+      <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+const linkStyle: React.CSSProperties = {
+  textDecoration: 'none', color: 'var(--dark)', fontSize: 14,
+};
+
+export default function Footer() {
+  return (
+    <footer style={{ background: '#fff', marginTop: 60 }}>
+      <div style={{ background: 'var(--hairline)', height: 1 }} />
+      <div style={{
+        maxWidth: 1120, margin: '0 auto', padding: '32px 32px 40px',
+        display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: 32,
+      }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+            <span style={{
+              fontFamily: staatliches.style.fontFamily,
+              fontSize: 24, letterSpacing: '0.04em',
+            }}>
+              Unwave
+            </span>
+            <MonoLabel>Network</MonoLabel>
           </div>
-          <div className="flex-grow flex flex-wrap justify-center -mb-10 md:mt-0 mt-10 text-center">
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <div className="footer-title font-semibold text-base-content tracking-widest text-sm md:text-left mb-3">
-                LINKS
-              </div>
-
-              <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
-              </div>
-            </div>
-
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <div className="footer-title font-semibold text-base-content tracking-widest text-sm md:text-left mb-3">
-                LEGAL
-              </div>
-
-              <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
-                <Link href="/tos" className="link link-hover">
-                  Terms of services
-                </Link>
-                <Link href="/privacy-policy" className="link link-hover">
-                  Privacy policy
-                </Link>
-              </div>
-            </div>
-          </div>
+          <p style={{
+            margin: '10px 0 0', maxWidth: 360, fontSize: 13,
+            lineHeight: 1.55, color: 'var(--muted)',
+          }}>
+            Small, useful tools for the physical world. Crate Mole is the first — more coming.
+          </p>
+          <p style={{ margin: '18px 0 0' }}>
+            <MonoLabel>© {new Date().getFullYear()} Unwave Network</MonoLabel>
+          </p>
         </div>
+
+        <FooterCol title="Tools">
+          <Link href="/" style={linkStyle}>Crate Mole</Link>
+          <span style={{ color: 'var(--muted)', fontSize: 14 }}>Coming soon</span>
+        </FooterCol>
+
+        <FooterCol title="Legal">
+          <Link href="/tos" style={linkStyle}>Terms of service</Link>
+          <Link href="/privacy-policy" style={linkStyle}>Privacy policy</Link>
+          <a href="#" style={linkStyle}>Contact</a>
+        </FooterCol>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

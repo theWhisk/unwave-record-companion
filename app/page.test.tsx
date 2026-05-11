@@ -31,4 +31,14 @@ describe('Home page', () => {
     render(<Home />);
     expect(screen.getByLabelText(/album search/i)).toBeInTheDocument();
   });
+
+  it('renders the Crate Mole hero heading', () => {
+    render(<Home />);
+    expect(screen.getByRole('heading', { name: /crate mole/i })).toBeInTheDocument();
+  });
+
+  it('shows empty state before any search is attempted', () => {
+    render(<Home />);
+    expect(screen.getByText(/no record yet/i)).toBeInTheDocument();
+  });
 });

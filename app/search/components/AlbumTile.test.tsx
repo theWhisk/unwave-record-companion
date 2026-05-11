@@ -20,7 +20,7 @@ jest.mock('next/image', () => ({
 }));
 jest.mock('@/components/StarRating', () => ({
   __esModule: true,
-  default: function StarRating() { return null; },
+  default: function StarRating(): null { return null; },
 }));
 
 import { useCurrency } from '@/app/currency-provider';

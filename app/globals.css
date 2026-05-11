@@ -182,6 +182,50 @@
   .cm-result-col { max-width: 640px; margin: 0 auto; width: 100%; }
 }
 
+/* Album tile — responsive cover + info layout */
+.cm-tile-inner {
+  display: flex;
+  padding: 22px;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.cm-tile-cover {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cm-tile-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .cm-tile-inner {
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+  }
+
+  .cm-tile-cover {
+    width: 100%;
+    height: 260px;
+    flex-shrink: unset;
+  }
+
+  .cm-tile-info {
+    padding: 16px 18px;
+    flex: none;
+    min-width: unset;
+  }
+}
+
 @keyframes cm-pulse { 0%, 100% { opacity: 0.55 } 50% { opacity: 1 } }
 
 html,

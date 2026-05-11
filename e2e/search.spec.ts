@@ -151,3 +151,46 @@ test('layout has no horizontal overflow at 390×844 (iPhone 14)', async ({ page 
   }));
   expect(docScrollWidth).toBeLessThanOrEqual(innerWidth);
 });
+
+async function renderAlbumTile(page: import('@playwright/test').Page) {
+  await page.route('/', async (route) => {
+    if (
+      route.request().method() === 'POST' &&
+      route.request().headers()['next-action']
+    ) {
+      await route.fulfill({
+        status: 200,
+        headers: {
+          'content-type': 'text/x-component',
+          'x-action-revalidated': '[[],0,0]',
+        },
+        body: RSC_ACTION_BODY,
+      });
+    } else {
+      await route.continue();
+    }
+  });
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.fill('#search', 'Abbey Road');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('h2')).toHaveText('Abbey Road', { timeout: 10_000 });
+}
+
+test('AlbumTile stacks vertically (flex-direction: column) at 390px viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await renderAlbumTile(page);
+  const flexDirection = await page.locator('.cm-tile-inner').evaluate(
+    (el) => getComputedStyle(el).flexDirection
+  );
+  expect(flexDirection).toBe('column');
+});
+
+test('AlbumTile uses row layout (flex-direction: row) at 1200px viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 900 });
+  await renderAlbumTile(page);
+  const flexDirection = await page.locator('.cm-tile-inner').evaluate(
+    (el) => getComputedStyle(el).flexDirection
+  );
+  expect(flexDirection).toBe('row');
+});

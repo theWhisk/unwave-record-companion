@@ -17,7 +17,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onCurrencyCh
       };
     
       return (
-        <select value={selectedCurrency} onChange={handleCurrencyChange}>
+        <select value={selectedCurrency} onChange={handleCurrencyChange} style={{ maxWidth: '100%' }}>
           {Object.values(Currency).map((currency) => (
             <option key={currency} value={currency}>
               {currencyOptions[currency].label} / {currencyOptions[currency].symbol}

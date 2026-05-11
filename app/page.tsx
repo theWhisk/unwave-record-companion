@@ -78,8 +78,8 @@ function EmptyState() {
         with pricing across condition, label history, and notes.
       </p>
       <div style={{
-        marginTop: 22, display: 'inline-flex', gap: 8, flexWrap: 'wrap',
-        justifyContent: 'center',
+        marginTop: 22, display: 'flex', gap: 8, flexWrap: 'wrap',
+        justifyContent: 'center', width: '100%',
       }}>
         {['Rumours', 'Kind of Blue', 'Songs in the Key of Life', 'Pet Sounds'].map(t => (
           <span key={t} style={{
@@ -164,7 +164,7 @@ export default function Home() {
             }}>
               <div style={{
                 display: 'flex', alignItems: 'center',
-                justifyContent: 'space-between', gap: 12, marginBottom: 14,
+                justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 14,
               }}>
                 <span style={{
                   fontFamily: MONO, fontSize: 10, letterSpacing: '0.18em',
@@ -177,10 +177,12 @@ export default function Home() {
                   padding: '6px 10px',
                   boxShadow: 'inset 0 0 0 1px var(--hairline)',
                   borderRadius: 2,
+                  maxWidth: '100%', overflow: 'hidden',
                 }}>
                   <span style={{
                     fontFamily: MONO, fontSize: 9, letterSpacing: '0.2em',
                     textTransform: 'uppercase', color: 'var(--muted)',
+                    flexShrink: 0,
                   }}>
                     Currency
                   </span>

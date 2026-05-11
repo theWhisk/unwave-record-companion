@@ -3,7 +3,6 @@
 import { ReleaseData, findRelease } from '@/app/search/search-service';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
-import { staatliches } from '@/styles/fonts';
 
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
@@ -50,7 +49,6 @@ export default function LookUpForm({ onRecordSearch, onLoadingChange }: LookUpFo
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="search" className="sr-only">Album Search</label>
       <div style={{ display: 'flex', gap: 10, alignItems: 'stretch' }}>
         <input
           id="search"
@@ -58,7 +56,7 @@ export default function LookUpForm({ onRecordSearch, onLoadingChange }: LookUpFo
           aria-label="Album search"
           placeholder="e.g. Rumours, or Abbey Road The Beatles"
           style={{
-            flex: 1, height: 52, padding: '0 16px',
+            flex: 1, minWidth: 0, height: 52, padding: '0 16px',
             fontFamily: 'var(--body)', fontSize: 16, color: 'var(--ink)',
             background: 'var(--bg)', border: 'none',
             boxShadow: 'inset 0 0 0 1px var(--hairline)',
@@ -81,12 +79,7 @@ export default function LookUpForm({ onRecordSearch, onLoadingChange }: LookUpFo
           }}
         >
           {loading ? (
-            <span style={{
-              fontFamily: staatliches.style.fontFamily,
-              fontSize: 14, letterSpacing: '0.12em',
-            }}>
-              Finding…
-            </span>
+            <span className="loading loading-spinner" style={{ width: 14, height: 14 }} />
           ) : (
             <>
               <SearchGlyph /> Find

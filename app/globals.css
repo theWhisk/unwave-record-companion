@@ -178,7 +178,7 @@
 .cm-search-col { position: sticky; top: 24px; }
 @media (max-width: 1080px) {
   .cm-layout { grid-template-columns: minmax(0, 1fr); }
-  .cm-search-col { position: static; max-width: 640px; margin: 0 auto; }
+  .cm-search-col { position: static; max-width: 640px; margin: 0 auto; width: 100%; }
   .cm-result-col { max-width: 640px; margin: 0 auto; width: 100%; }
 }
 

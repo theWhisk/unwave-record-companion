@@ -14,9 +14,7 @@ jest.mock('@/app/currency-provider', () => ({
 }));
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: function Image({ alt }: { alt: string }) {
-    return <img alt={alt} />; // eslint-disable-line @next/next/no-img-element
-  },
+  default: function Image(): null { return null; },
 }));
 jest.mock('@/components/StarRating', () => ({
   __esModule: true,

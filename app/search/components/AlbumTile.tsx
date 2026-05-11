@@ -34,9 +34,9 @@ export default function AlbumTile({ findRecordResponse: data, selectedCurrency }
             background: '#fff',
             boxShadow: '0 1px 0 var(--hairline), 0 12px 28px -16px rgba(60,50,40,0.25)',
         }}>
-            <div style={{ display: 'flex', padding: 22, gap: 22, alignItems: 'flex-start' }}>
+            <div className="cm-tile-inner">
                 {/* Cover art */}
-                <div style={{ position: 'relative', width: 200, height: 200, flexShrink: 0, overflow: 'hidden' }}>
+                <div className="cm-tile-cover">
                     <Image
                         src={data.image}
                         alt={`Album art for ${data.title}`}
@@ -46,7 +46,7 @@ export default function AlbumTile({ findRecordResponse: data, selectedCurrency }
                 </div>
 
                 {/* Right column */}
-                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div className="cm-tile-info">
                     {/* Year · tracks meta */}
                     <div style={{
                         fontFamily: MONO, fontSize: 10,

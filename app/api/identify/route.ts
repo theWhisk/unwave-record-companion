@@ -72,7 +72,8 @@ export async function POST(req: Request) {
 
     if (raw) {
       try {
-        const parsed = JSON.parse(raw) as { query?: unknown; condition?: unknown };
+        const stripped = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+        const parsed = JSON.parse(stripped) as { query?: unknown; condition?: unknown };
         if (typeof parsed.query === 'string') query = parsed.query.trim();
         if (typeof parsed.condition === 'string') condition = parsed.condition;
       } catch {

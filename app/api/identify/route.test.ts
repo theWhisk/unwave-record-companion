@@ -130,6 +130,34 @@ describe('POST /api/identify', () => {
     });
   });
 
+  it('parses JSON wrapped in ```json markdown fences', async () => {
+    mockCreate.mockResolvedValueOnce({
+      content: [{ type: 'text', text: '```json\n{"query":"Pink Floyd - The Dark Side of the Moon","condition":"Very Good (VG)"}\n```' }],
+    });
+
+    const { POST } = await import('./route');
+    const res = await POST(makeRequest(makeFile()));
+
+    expect(await res.json()).toEqual({
+      query: 'Pink Floyd - The Dark Side of the Moon',
+      condition: 'Very Good (VG)',
+    });
+  });
+
+  it('parses JSON wrapped in plain ``` markdown fences', async () => {
+    mockCreate.mockResolvedValueOnce({
+      content: [{ type: 'text', text: '```\n{"query":"Pink Floyd - The Dark Side of the Moon","condition":null}\n```' }],
+    });
+
+    const { POST } = await import('./route');
+    const res = await POST(makeRequest(makeFile()));
+
+    expect(await res.json()).toEqual({
+      query: 'Pink Floyd - The Dark Side of the Moon',
+      condition: null,
+    });
+  });
+
   it('returns { query: "UNKNOWN", condition: null } when Claude returns invalid JSON', async () => {
     mockCreate.mockResolvedValueOnce({
       content: [{ type: 'text', text: 'not valid json at all' }],

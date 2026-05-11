@@ -121,8 +121,8 @@ export default function CameraButton({ onRecordSearch, onLoadingChange }: Camera
         onClick={() => fileInputRef.current?.click()}
         disabled={loading}
         style={{
-          height: 52, background: 'transparent', color: 'var(--ink)',
-          boxShadow: 'inset 0 0 0 1px var(--ink)', border: 'none',
+          height: 52, background: 'var(--ink)', color: '#fff',
+          boxShadow: 'none', border: 'none',
           fontFamily: MONO, fontSize: 12, letterSpacing: '0.18em',
           textTransform: 'uppercase', cursor: loading ? 'default' : 'pointer',
           borderRadius: 2, opacity: loading ? 0.6 : 1,

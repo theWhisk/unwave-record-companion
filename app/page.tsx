@@ -63,6 +63,7 @@ function EmptyState() {
       background: '#fff',
       boxShadow: '0 1px 0 var(--hairline)',
       padding: '48px 32px', textAlign: 'center',
+      overflow: 'hidden',
     }}>
       <span style={{
         fontFamily: MONO, fontSize: 10, letterSpacing: '0.18em',
@@ -108,6 +109,7 @@ function LoadingState() {
       boxShadow: '0 1px 0 var(--hairline)',
       padding: 22,
       display: 'grid', gridTemplateColumns: '200px 1fr', gap: 22,
+      overflow: 'hidden',
     }}>
       <div style={{
         height: 200,
@@ -161,6 +163,7 @@ export default function Home() {
               background: '#fff',
               boxShadow: '0 1px 0 var(--hairline), 0 12px 28px -22px rgba(60,50,40,0.25)',
               padding: '28px 32px',
+              overflow: 'hidden',
             }}>
               <div style={{
                 display: 'flex', alignItems: 'center',
@@ -177,7 +180,7 @@ export default function Home() {
                   padding: '6px 10px',
                   boxShadow: 'inset 0 0 0 1px var(--hairline)',
                   borderRadius: 2,
-                  maxWidth: '100%', overflow: 'hidden',
+                  maxWidth: '100%',
                 }}>
                   <span style={{
                     fontFamily: MONO, fontSize: 9, letterSpacing: '0.2em',

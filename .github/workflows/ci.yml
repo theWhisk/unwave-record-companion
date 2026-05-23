@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
+      - run: npm audit --audit-level=high --omit=dev
       - run: npm test
       - run: npm run lint
       - run: npx tsc --noEmit

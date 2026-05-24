@@ -32,6 +32,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# claude code
+.claude/settings.local.json
+
 # typescript
 *.tsbuildinfo
 # next-env.d.ts is intentionally tracked — CI needs it for tsc --noEmit

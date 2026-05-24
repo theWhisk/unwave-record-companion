@@ -22,12 +22,24 @@ export type Theme =
   | "dracula"
   | "nord";
 
-export interface ConfigProps {
-  appName: string;
-  appDescription: string;
+/** Shared across all tools on the Unwave Network site. */
+export interface SiteConfig {
+  name: string;
   domainName: string;
   colors: {
     theme: Theme;
     main: string;
   };
+}
+
+/** Per-tool config. Add one AppConfig per tool hosted on the site. */
+export interface AppConfig {
+  /** Composes with site.name to form page titles: "<app.name> | <site.name>". */
+  name: string;
+  description: string;
+}
+
+export interface ConfigProps {
+  site: SiteConfig;
+  app: AppConfig;
 }

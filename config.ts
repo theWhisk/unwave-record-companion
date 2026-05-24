@@ -1,13 +1,19 @@
 import { ConfigProps } from "./types/config";
 
-const config = {
-  appName: "Crate Mole",
-  appDescription: "Find vinyl prices and info for any record.",
-  domainName: "unwave.net",
-  colors: {
-    theme: "lofi",
-    main: "#0f172a",
+const config: ConfigProps = {
+  site: {
+    name: "Unwave Network",
+    domainName: "unwave.net",
+    colors: {
+      theme: "lofi",
+      main: "#0f172a",
+    },
   },
-} as ConfigProps;
+  app: {
+    name: "Crate Mole",
+    description:
+      "The record companion that gets out of your way. A quick snapshot of any album — info, ratings, and more — no rabbit holes.",
+  },
+};
 
 export default config;

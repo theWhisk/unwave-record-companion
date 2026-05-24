@@ -26,7 +26,7 @@ import config from "@/config";
 // Please write a simple privacy policy for my site. Add the current date.  Do not add or explain your reasoning. Answer:
 
 export const metadata = getSEOTags({
-  title: `Privacy Policy | ${config.appName}`,
+  title: `Privacy Policy | ${config.app.name}`,
   canonicalUrlRelative: "/privacy-policy",
 });
 
@@ -50,7 +50,7 @@ const PrivacyPolicy = () => {
           Back
         </Link>
         <h1 className="text-3xl font-extrabold pb-6">
-          Privacy Policy for {config.appName}
+          Privacy Policy for {config.app.name}
         </h1>
 
         <pre

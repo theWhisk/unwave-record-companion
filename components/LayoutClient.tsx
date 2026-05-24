@@ -10,7 +10,7 @@ import { CurrencyProvider } from "@/app/currency-provider";
 const ClientLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <NextTopLoader color={config.colors.main} showSpinner={false} />
+      <NextTopLoader color={config.site.colors.main} showSpinner={false} />
       <CurrencyProvider>
         {children}
         <Toaster toastOptions={{ duration: 3000 }} />

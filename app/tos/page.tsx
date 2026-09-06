@@ -38,27 +38,11 @@ const TOS = () => {
 
 Effective Date: September 6, 2026
 
-Welcome to Crate Mole!
+Crate Mole is a free, hobby-run tool for looking up vinyl pricing and information. There are no accounts and no payments — pricing, ratings, and summary data are sourced from third parties (Discogs, Wikipedia, ExchangeRate-API) and photo identification is performed by an Anthropic AI model, so accuracy isn't guaranteed.
 
-These Terms of Service ("Terms") govern your use of Crate Mole (the "Service"), provided by Unwave and accessible via https://maracuya.unwave.net. By accessing or using the Service, you agree to be bound by these Terms.
+The Service is provided "as is," with no warranty of any kind, and may change or go away at any time. Please don't abuse, scrape, or overload it.
 
-    Description of Service: Crate Mole helps record collectors look up vinyl pricing and information. You submit a search (as text, or as a photo of an album cover) and the Service returns pricing suggestions, ratings, genre tags, and a summary sourced from third parties, including Discogs and Wikipedia.
-
-    No Accounts, No Payments: The Service does not require you to create an account and does not process payments. It is provided free of charge.
-
-    Third-Party Data: Pricing, ratings, and catalog data come from Discogs; summaries come from Wikipedia; currency conversion comes from ExchangeRate-API; photo identification is performed by an Anthropic AI model. Unwave does not control and is not responsible for the accuracy of this third-party data — prices are suggestions, not guarantees.
-
-    Acceptable Use: You agree not to abuse, scrape, or overload the Service, or use it for any unlawful purpose.
-
-    Disclaimer of Warranty: The Service is provided "as is," without warranty of any kind. Unwave does not guarantee the Service will be uninterrupted, error-free, or that pricing data will be accurate or current.
-
-    Changes to the Terms: We may update these Terms from time to time. Continued use of the Service after a change constitutes acceptance of the updated Terms.
-
-    Governing Law: These Terms shall be governed by and construed in accordance with the laws of [jurisdiction to be confirmed].
-
-If you have any questions or concerns about these Terms, please contact us at william@unwave.net.
-
-Thank you for using Crate Mole!`}
+Questions? Contact william@unwave.net.`}
         </pre>
       </div>
     </main>

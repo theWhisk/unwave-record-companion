@@ -2,29 +2,6 @@ import Link from "next/link";
 import { getSEOTags } from "@/libs/seo";
 import config from "@/config";
 
-// CHATGPT PROMPT TO GENERATE YOUR TERMS & SERVICES — replace with your own data 👇
-
-// 1. Go to https://chat.openai.com/
-// 2. Copy paste bellow
-// 3. Replace the data with your own (if needed)
-// 4. Paste the answer from ChatGPT directly in the <pre> tag below
-
-// You are an excellent lawyer.
-
-// I need your help to write a simple Terms & Services for my website. Here is some context:
-// - Website: https://unwave.net
-// - Name: Unwave
-// - Contact information: william@unwave.net
-// - Description: A JavaScript code boilerplate to help entrepreneurs launch their startups faster
-// - Ownership: when buying a package, users can download code to create apps. They own the code but they do not have the right to resell it. They can ask for a full refund within 7 day after the purchase.
-// - User data collected: name, email and payment information
-// - Non-personal data collection: web cookies
-// - Link to privacy-policy: https://unwave.net/privacy-policy
-// - Governing Law: France
-// - Updates to the Terms: users will be updated by email
-
-// Please write a simple Terms & Services for my site. Add the current date. Do not add or explain your reasoning. Answer:
-
 export const metadata = getSEOTags({
   title: `Terms and Conditions | ${config.app.name}`,
   canonicalUrlRelative: "/tos",
@@ -59,27 +36,13 @@ const TOS = () => {
         >
           {`Terms of Service
 
-Effective Date: April 30, 2024
+Effective Date: September 6, 2026
 
-Welcome to UnwaveSeekr!
+Crate Mole is a free, hobby-run tool for looking up vinyl pricing and information. There are no accounts and no payments — pricing, ratings, and summary data are sourced from third parties (Discogs, Wikipedia, ExchangeRate-API) and photo identification is performed by an Anthropic AI model, so accuracy isn't guaranteed.
 
-These Terms of Service ("Terms") govern your use of UnwaveSeekr (the "Service"), provided to you by UnwaveSeekr, operated by Unwave, and accessible via https://www.unwave.net. By accessing or using the Service, you agree to be bound by these Terms.
+The Service is provided "as is," with no warranty of any kind, and may change or go away at any time. Please don't abuse, scrape, or overload it.
 
-    Description of Service: UnwaveSeekr is a search tool designed to assist record collectors in valuing their vinyl records easily.
-
-    Ownership: UnwaveSeekr is a service provided by Unwave. It does not confer ownership rights to users.
-
-    User Data: We collect and store user-provided information including name, email, and payment information. Your privacy and security are important to us. Please review our Privacy Policy for more details on how we handle your data: https://www.unwave.net/privacy-policy.
-
-    Non-Personal Data: We may also collect non-personal data through the use of web cookies. This data helps us improve the Service and provide a better user experience.
-
-    Governing Law: These Terms shall be governed by and construed in accordance with the laws of Malta.
-
-    Updates to the Terms: We may update these Terms from time to time. Users will be notified of any changes via email.
-
-If you have any questions or concerns about these Terms, please contact us at william@unwave.net.
-
-Thank you for using UnwaveSeekr!`}
+Questions? Contact william@unwave.net.`}
         </pre>
       </div>
     </main>

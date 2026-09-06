@@ -2,7 +2,7 @@
 
 A vinyl pricing companion for record collectors. Point your phone at an album cover — or type a search — to get Discogs price suggestions by condition, alongside ratings, genre tags, album art, and a Wikipedia summary.
 
-Live at: https://unwave.net
+Live at: https://maracuya.unwave.net
 
 Built by William (william@thewhisk.dev)
 

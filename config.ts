@@ -3,7 +3,7 @@ import { ConfigProps } from "./types/config";
 const config: ConfigProps = {
   site: {
     name: "Unwave Network",
-    domainName: "unwave.net",
+    domainName: "maracuya.unwave.net",
     colors: {
       theme: "lofi",
       main: "#0f172a",

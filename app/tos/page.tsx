@@ -2,29 +2,6 @@ import Link from "next/link";
 import { getSEOTags } from "@/libs/seo";
 import config from "@/config";
 
-// CHATGPT PROMPT TO GENERATE YOUR TERMS & SERVICES — replace with your own data 👇
-
-// 1. Go to https://chat.openai.com/
-// 2. Copy paste bellow
-// 3. Replace the data with your own (if needed)
-// 4. Paste the answer from ChatGPT directly in the <pre> tag below
-
-// You are an excellent lawyer.
-
-// I need your help to write a simple Terms & Services for my website. Here is some context:
-// - Website: https://unwave.net
-// - Name: Unwave
-// - Contact information: william@unwave.net
-// - Description: A JavaScript code boilerplate to help entrepreneurs launch their startups faster
-// - Ownership: when buying a package, users can download code to create apps. They own the code but they do not have the right to resell it. They can ask for a full refund within 7 day after the purchase.
-// - User data collected: name, email and payment information
-// - Non-personal data collection: web cookies
-// - Link to privacy-policy: https://unwave.net/privacy-policy
-// - Governing Law: France
-// - Updates to the Terms: users will be updated by email
-
-// Please write a simple Terms & Services for my site. Add the current date. Do not add or explain your reasoning. Answer:
-
 export const metadata = getSEOTags({
   title: `Terms and Conditions | ${config.app.name}`,
   canonicalUrlRelative: "/tos",
@@ -59,27 +36,29 @@ const TOS = () => {
         >
           {`Terms of Service
 
-Effective Date: April 30, 2024
+Effective Date: September 6, 2026
 
-Welcome to UnwaveSeekr!
+Welcome to Crate Mole!
 
-These Terms of Service ("Terms") govern your use of UnwaveSeekr (the "Service"), provided to you by UnwaveSeekr, operated by Unwave, and accessible via https://www.unwave.net. By accessing or using the Service, you agree to be bound by these Terms.
+These Terms of Service ("Terms") govern your use of Crate Mole (the "Service"), provided by Unwave and accessible via https://maracuya.unwave.net. By accessing or using the Service, you agree to be bound by these Terms.
 
-    Description of Service: UnwaveSeekr is a search tool designed to assist record collectors in valuing their vinyl records easily.
+    Description of Service: Crate Mole helps record collectors look up vinyl pricing and information. You submit a search (as text, or as a photo of an album cover) and the Service returns pricing suggestions, ratings, genre tags, and a summary sourced from third parties, including Discogs and Wikipedia.
 
-    Ownership: UnwaveSeekr is a service provided by Unwave. It does not confer ownership rights to users.
+    No Accounts, No Payments: The Service does not require you to create an account and does not process payments. It is provided free of charge.
 
-    User Data: We collect and store user-provided information including name, email, and payment information. Your privacy and security are important to us. Please review our Privacy Policy for more details on how we handle your data: https://www.unwave.net/privacy-policy.
+    Third-Party Data: Pricing, ratings, and catalog data come from Discogs; summaries come from Wikipedia; currency conversion comes from ExchangeRate-API; photo identification is performed by an Anthropic AI model. Unwave does not control and is not responsible for the accuracy of this third-party data — prices are suggestions, not guarantees.
 
-    Non-Personal Data: We may also collect non-personal data through the use of web cookies. This data helps us improve the Service and provide a better user experience.
+    Acceptable Use: You agree not to abuse, scrape, or overload the Service, or use it for any unlawful purpose.
 
-    Governing Law: These Terms shall be governed by and construed in accordance with the laws of Malta.
+    Disclaimer of Warranty: The Service is provided "as is," without warranty of any kind. Unwave does not guarantee the Service will be uninterrupted, error-free, or that pricing data will be accurate or current.
 
-    Updates to the Terms: We may update these Terms from time to time. Users will be notified of any changes via email.
+    Changes to the Terms: We may update these Terms from time to time. Continued use of the Service after a change constitutes acceptance of the updated Terms.
+
+    Governing Law: These Terms shall be governed by and construed in accordance with the laws of [jurisdiction to be confirmed].
 
 If you have any questions or concerns about these Terms, please contact us at william@unwave.net.
 
-Thank you for using UnwaveSeekr!`}
+Thank you for using Crate Mole!`}
         </pre>
       </div>
     </main>

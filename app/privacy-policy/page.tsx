@@ -2,29 +2,6 @@ import Link from "next/link";
 import { getSEOTags } from "@/libs/seo";
 import config from "@/config";
 
-// CHATGPT PROMPT TO GENERATE YOUR PRIVACY POLICY — replace with your own data 👇
-
-// 1. Go to https://chat.openai.com/
-// 2. Copy paste bellow
-// 3. Replace the data with your own (if needed)
-// 4. Paste the answer from ChatGPT directly in the <pre> tag below
-
-// You are an excellent lawyer.
-
-// I need your help to write a simple privacy policy for my website. Here is some context:
-// - Website: https://unwave.net
-// - Name: Unwave
-// - Description: A JavaScript code boilerplate to help entrepreneurs launch their startups faster
-// - User data collected: name, email and payment information
-// - Non-personal data collection: web cookies
-// - Purpose of Data Collection: Order processing
-// - Data sharing: we do not share the data with any other parties
-// - Children's Privacy: we do not collect any data from children
-// - Updates to the Privacy Policy: users will be updated by email
-// - Contact information: william@unwave.net
-
-// Please write a simple privacy policy for my site. Add the current date.  Do not add or explain your reasoning. Answer:
-
 export const metadata = getSEOTags({
   title: `Privacy Policy | ${config.app.name}`,
   canonicalUrlRelative: "/privacy-policy",
@@ -57,28 +34,27 @@ const PrivacyPolicy = () => {
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Privacy Policy for UnwaveSeekr
+          {`Privacy Policy for Crate Mole
 
-Last updated: April 30, 2024
+Last updated: September 6, 2026
 
-    Consent: Your use of UnwaveSeekr constitutes acceptance of this Privacy Policy and signifies your consent to the collection, processing, and use of your personal information in accordance with the terms outlined herein.
+    No Accounts: Crate Mole does not require you to sign up, and we do not collect your name, email, or payment information. There are no user accounts.
 
-    Data Collection: We collect specific user data necessary for order processing, including but not limited to:
-        Name
-        Email
-        Payment information
+    Search Data: When you search by text, your query is sent server-side to Discogs and Wikipedia to look up pricing, ratings, and summary information. When you search by photo, the captured image is sent server-side to an Anthropic AI model to identify the artist and album; the image is used only to generate that identification and is not stored by Crate Mole afterward.
 
-    Non-personal Data: UnwaveSeekr may also gather non-personal information through the use of web cookies to enhance user experience and improve our services.
+    Technical Logs: Like most web services, our infrastructure providers (Sentry for error tracking, Axiom for structured logging) may automatically record technical data such as IP address, browser type, and request metadata, for the purpose of diagnosing errors and keeping the Service reliable. This data is not used to build a profile of you and is not sold.
 
-    Data Sharing: We do not share, sell, or disclose any user data to third parties without explicit consent, except as required by law or as necessary for order processing.
+    Cookies: Crate Mole does not use cookies for tracking or advertising.
 
-    Children's Privacy: UnwaveSeekr is not directed at individuals under the age of 18, and we do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.
+    Data Sharing: We do not sell or share your data with third parties except as described above (Discogs, Wikipedia, Anthropic, Sentry, Axiom, ExchangeRate-API) as necessary to operate the Service, or as required by law.
 
-    Updates to Privacy Policy: Users will be informed of any changes to this Privacy Policy via email. Continued use of UnwaveSeekr after such modifications constitutes acceptance of the updated terms.
+    Children's Privacy: Crate Mole is not directed at children, and we do not knowingly collect personal information from children.
+
+    Updates to this Privacy Policy: We may update this Privacy Policy from time to time. Continued use of the Service after a change constitutes acceptance of the updated policy.
 
     Contact Information: If you have any questions, concerns, or requests regarding our privacy practices, please reach out to us at william@unwave.net.
 
-Your trust and privacy are of utmost importance to us at UnwaveSeekr. Thank you for choosing to use our service.`}
+Thank you for using Crate Mole.`}
         </pre>
       </div>
     </main>
